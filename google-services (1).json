@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "700669285429",
+    "project_id": "travelitinerarycw",
+    "storage_bucket": "travelitinerarycw.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700669285429:android:38eda2be2d0728c6004d7c",
+        "android_client_info": {
+          "package_name": "com.example.travelappcw"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkoNVAscPw-WfzGzjp-njrPKUJqwQRLDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
