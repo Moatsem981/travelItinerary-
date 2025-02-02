@@ -36,25 +36,49 @@ android {
 }
 
 dependencies {
+    // AndroidX Core Dependencies
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation(libs.navigation.fragment)
-    implementation(libs.navigation.ui)
+
+    // Navigation Component (Manually Added)
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+
+    // Firebase Firestore & Core SDK (Manually Added)
     implementation("com.google.firebase:firebase-firestore:25.1.1")
     implementation("com.google.firebase:firebase-core:21.1.0")
-    implementation(libs.firebase.database)
-    implementation(libs.recyclerview)
-    implementation(libs.firebase.inappmessaging)
-    implementation(libs.media3.common)
-    implementation(libs.annotation)
-    implementation(libs.lifecycle.livedata.ktx)
-    implementation(libs.lifecycle.viewmodel.ktx)
+
+    // Firebase Database (Manually Added)
+    implementation("com.google.firebase:firebase-database-ktx:20.3.1")
+
+    // RecyclerView (Manually Added)
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+
+    // Firebase In-App Messaging (Manually Added)
+    implementation("com.google.firebase:firebase-inappmessaging-display:20.3.1")
+
+    // AndroidX Media Library (Manually Added)
+    implementation("androidx.media3:media3-common:1.3.1")
+
+    // AndroidX Annotation (Manually Added)
+    implementation("androidx.annotation:annotation:1.7.0")
+
+    // Lifecycle Components (Manually Added)
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+
+    // GridLayout Dependency (Manually Added)
+    implementation("androidx.gridlayout:gridlayout:1.0.0")
+    implementation("com.google.firebase:firebase-auth:22.2.0") // Firebase Authentication
+    implementation("com.google.firebase:firebase-firestore:25.1.1") // Firestore Database
+    implementation("androidx.gridlayout:gridlayout:1.0.0")
+
+    // Unit Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation("androidx.gridlayout:gridlayout:1.0.0")
 }
 
 apply(plugin = "com.google.gms.google-services")  // Correct Kotlin DSL plugin application

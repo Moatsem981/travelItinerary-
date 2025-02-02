@@ -7,16 +7,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    tools:context=".LoginSignUpPage">
+    tools:context=".SignUpPage">
 
     <!-- App Title -->
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="NextTrip"
-        android:textSize="32sp"
-        android:textColor="#4000FF"
+        android:text="NextTrip - Sign Up"
+        android:textSize="28sp"
+        android:textColor="#40A4FF"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,9 +35,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="World Map"/>
 
-    <!-- Login Form Container -->
+    <!-- Sign Up Form Container -->
     <androidx.cardview.widget.CardView
-        android:id="@+id/loginCard"
+        android:id="@+id/signUpCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -53,16 +53,35 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Email Input -->
+            <!-- Full Name Input -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Full Name"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:id="@+id/fullNameInput"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/input_field"
+                android:hint="Enter Full Name"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#B0B0B0"
+                android:padding="10dp"/>
+
+            <!-- Username Input -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Username"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                android:layout_marginTop="10dp"/>
 
             <EditText
-                android:id="@+id/emailInput"
+                android:id="@+id/usernameInput"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@drawable/input_field"
@@ -91,40 +110,46 @@
                 android:padding="10dp"
                 android:inputType="textPassword"/>
 
-            <!-- Sign In Button -->
+            <!-- Confirm Password Input -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirm Password"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:layout_marginTop="10dp"/>
+
+            <EditText
+                android:id="@+id/confirmPasswordInput"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/input_field"
+                android:hint="Confirm Password"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#B0B0B0"
+                android:padding="10dp"
+                android:inputType="textPassword"/>
+
+            <!-- Sign Up Button -->
             <Button
-                android:id="@+id/signInButton"
+                android:id="@+id/registerButton"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:text="Sign In"
+                android:text="Sign Up"
                 android:background="@drawable/button_background"
                 android:textColor="#FFFFFF"
                 android:layout_marginTop="15dp"/>
 
-            <!-- Forgot Password Link -->
+            <!-- Already Have an Account -->
             <TextView
-                android:id="@+id/forgotPassword"
+                android:id="@+id/alreadyHaveAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Forgot password?"
+                android:text="Already have an account? Log in"
                 android:textColor="#40A4FF"
                 android:textSize="14sp"
                 android:layout_marginTop="10dp"/>
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
-    <!-- Sign Up Button -->
-    <Button
-        android:id="@+id/signUpButton"
-        android:layout_width="250dp"
-        android:layout_height="45dp"
-        android:text="Sign Up"
-        android:background="@drawable/button_background"
-        android:textColor="#FFFFFF"
-        app:layout_constraintTop_toBottomOf="@id/loginCard"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
