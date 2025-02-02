@@ -66,7 +66,8 @@
             app:cardCornerRadius="12dp"
             app:cardBackgroundColor="#1A1A1A"
             app:cardElevation="4dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:onClick="openItinerary">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,7 +100,8 @@
             app:cardCornerRadius="12dp"
             app:cardBackgroundColor="#1A1A1A"
             app:cardElevation="4dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:onClick="openBookings">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -123,111 +125,30 @@
                     android:textStyle="bold"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
-        <!-- Offline Maps -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            app:cardCornerRadius="12dp"
-            app:cardBackgroundColor="#1A1A1A"
-            app:cardElevation="4dp"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/offline"
-                    app:tint="#40A4FF"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Offline Maps"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Speak & Translate -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            app:cardCornerRadius="12dp"
-            app:cardBackgroundColor="#1A1A1A"
-            app:cardElevation="4dp"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/mic"
-                    app:tint="#40A4FF"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Speak and Translate"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
     </androidx.gridlayout.widget.GridLayout>
 
+    <!-- Floating Action Button for Speak & Translate -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/speakTranslateFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/mic"
+        app:tint="#FFFFFF"
+        app:backgroundTint="#40A4FF"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"
+        android:onClick="openSpeakTranslate"/>
+
     <!-- Bottom Navigation Bar -->
-    <LinearLayout
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <ImageView
-            android:id="@+id/offlineMode"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/offline"
-            app:tint="#40A4FF"/>
-
-        <ImageView
-            android:id="@+id/voiceAssistant"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/mic"
-            app:tint="#40A4FF"/>
-
-        <ImageView
-            android:id="@+id/nightMode"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/darkmode"
-            app:tint="#40A4FF"/>
-
-        <ImageView
-            android:id="@+id/profile"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/profile"
-            app:tint="#40A4FF"/>
-    </LinearLayout>
+        android:background="#1A1A1A"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/bottom_nav_menu"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
