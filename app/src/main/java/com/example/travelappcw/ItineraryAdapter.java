@@ -8,19 +8,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.List;
 
 public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.ViewHolder> {
 
     private List<ItineraryItem> itineraryList;
     private FirebaseFirestore db;
+    private String loggedInUsername;
 
-    public ItineraryAdapter(List<ItineraryItem> itineraryList, FirebaseFirestore db) {
+    public ItineraryAdapter(List<ItineraryItem> itineraryList, FirebaseFirestore db, String loggedInUsername) {
         this.itineraryList = itineraryList;
         this.db = db;
+        this.loggedInUsername = loggedInUsername;
     }
 
     @NonNull
@@ -40,7 +45,8 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
 
         holder.editButton.setOnClickListener(v -> editItinerary(holder.itemView.getContext(), item));
         holder.deleteButton.setOnClickListener(v -> {
-            db.collection("itineraries").document(item.getId()).delete();
+            db.collection("Users").document(loggedInUsername)
+                    .collection("itineraries").document(item.getId()).delete();
             itineraryList.remove(position);
             notifyDataSetChanged();
         });
@@ -61,7 +67,8 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         btnUpdate.setOnClickListener(v -> {
             item.setTime(editTime.getText().toString());
             item.setActivity(editActivity.getText().toString());
-            db.collection("itineraries").document(item.getId()).set(item);
+            db.collection("Users").document(loggedInUsername)
+                    .collection("itineraries").document(item.getId()).set(item);
             notifyDataSetChanged();
         });
 

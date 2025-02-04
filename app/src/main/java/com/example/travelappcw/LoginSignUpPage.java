@@ -71,18 +71,17 @@ public class LoginSignUpPage extends AppCompatActivity {
             return;
         }
 
-        // Check Firestore for the user's credentials
         db.collection("Users").document(username)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        // Get the stored password
                         String storedPassword = documentSnapshot.getString("password");
-
-                        // Verify password
                         if (storedPassword != null && storedPassword.equals(password)) {
                             Toast.makeText(LoginSignUpPage.this, "Login Successful", Toast.LENGTH_SHORT).show();
+
+                            // Pass User ID to the AppMainPage
                             Intent intent = new Intent(LoginSignUpPage.this, AppMainPage.class);
+                            intent.putExtra("USER_ID", username);
                             startActivity(intent);
                             finish();
                         } else {
