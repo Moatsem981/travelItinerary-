@@ -75,12 +75,12 @@ public class SignUpPage extends AppCompatActivity {
         }
 
         // Register user with Firebase Authentication
-        auth.createUserWithEmailAndPassword(username + "@nexttrip.com", password) // Dummy email format
+        auth.createUserWithEmailAndPassword(username + "@nexttrip.com", password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = auth.getCurrentUser();
                         if (user != null) {
-                            saveUserToFirestore(user.getUid(), fullName, username, password);
+                            saveUserToFirestore(user.getUid(), fullName, username);
                         }
                     } else {
                         Toast.makeText(SignUpPage.this, "Sign-Up Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -88,18 +88,18 @@ public class SignUpPage extends AppCompatActivity {
                 });
     }
 
-    // Save user details to Firestore (Without Password)
-    private void saveUserToFirestore(String userId, String fullName, String username, String password) {
+    private void saveUserToFirestore(String userId, String fullName, String username) {
         Map<String, Object> user = new HashMap<>();
         user.put("fullName", fullName);
         user.put("username", username);
-        user.put("password", password); // Storing password in Firestore
 
         db.collection("Users").document(username)
                 .set(user)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(SignUpPage.this, "Welcome to NextTrip!", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(SignUpPage.this, AppMainPage.class));
+                    Intent intent = new Intent(SignUpPage.this, AppMainPage.class);
+                    intent.putExtra("USER_ID", username);
+                    startActivity(intent);
                     finish();
                 })
                 .addOnFailureListener(e -> {

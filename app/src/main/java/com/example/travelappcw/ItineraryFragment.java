@@ -31,17 +31,18 @@ public class ItineraryFragment extends Fragment {
     private FirebaseFirestore db;
     private String loggedInUsername;
 
-    public ItineraryFragment() {
-        // Required empty constructor
-    }
+    public ItineraryFragment() {}
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_itinerary, container, false);
 
-        // Get the logged-in username from intent (passed from LoginSignUpPage)
-        loggedInUsername = getActivity().getIntent().getStringExtra("USER_ID");
+        // Retrieve USER_ID from arguments (passed from AppMainPage)
+        if (getArguments() != null) {
+            loggedInUsername = getArguments().getString("USER_ID");
+        }
+
         if (loggedInUsername == null) {
             Log.e("Firestore", "No user logged in");
             return view;
@@ -74,6 +75,7 @@ public class ItineraryFragment extends Fragment {
 
             if (!day.isEmpty() && !time.isEmpty() && !activity.isEmpty()) {
                 ItineraryItem item = new ItineraryItem(day, time, activity);
+
                 itineraryRef.add(item)
                         .addOnSuccessListener(documentReference -> {
                             item.setId(documentReference.getId()); // Store Firestore ID
@@ -88,6 +90,9 @@ public class ItineraryFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Loads user-specific itineraries from Firestore.
+     */
     private void loadItinerary(CollectionReference itineraryRef) {
         itineraryRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
             itineraryList.clear();
@@ -97,9 +102,12 @@ public class ItineraryFragment extends Fragment {
                 itineraryList.add(item);
             }
             adapter.notifyDataSetChanged();
-        });
+        }).addOnFailureListener(e -> Log.e("Firestore", "Failed to load itineraries", e));
     }
 
+    /**
+     * Clears input fields after adding an itinerary.
+     */
     private void clearFields() {
         inputDay.setText("");
         inputTime.setText("");
