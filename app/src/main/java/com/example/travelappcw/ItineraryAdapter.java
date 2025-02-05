@@ -2,18 +2,16 @@ package com.example.travelappcw;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.List;
 
 public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.ViewHolder> {
@@ -43,36 +41,56 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         holder.timeTextView.setText(item.getTime());
         holder.activityTextView.setText(item.getActivity());
 
-        holder.editButton.setOnClickListener(v -> editItinerary(holder.itemView.getContext(), item));
+        holder.editButton.setOnClickListener(v -> editItinerary(holder.itemView.getContext(), item, position));
         holder.deleteButton.setOnClickListener(v -> {
             db.collection("Users").document(loggedInUsername)
-                    .collection("itineraries").document(item.getId()).delete();
-            itineraryList.remove(position);
-            notifyDataSetChanged();
+                    .collection("itineraries").document(item.getId()).delete()
+                    .addOnSuccessListener(aVoid -> {
+                        itineraryList.remove(position);
+                        notifyDataSetChanged();
+                    });
         });
     }
 
-    private void editItinerary(Context context, ItineraryItem item) {
+    private void editItinerary(Context context, ItineraryItem item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_edit_itinerary, null);
         builder.setView(view);
 
+        EditText editDay = view.findViewById(R.id.editDay);
         EditText editTime = view.findViewById(R.id.editTime);
         EditText editActivity = view.findViewById(R.id.editActivity);
         Button btnUpdate = view.findViewById(R.id.btnUpdate);
 
+        editDay.setText(item.getDay());
         editTime.setText(item.getTime());
         editActivity.setText(item.getActivity());
 
+        AlertDialog dialog = builder.create(); // Create dialog instance
+
         btnUpdate.setOnClickListener(v -> {
-            item.setTime(editTime.getText().toString());
-            item.setActivity(editActivity.getText().toString());
-            db.collection("Users").document(loggedInUsername)
-                    .collection("itineraries").document(item.getId()).set(item);
-            notifyDataSetChanged();
+            String newDay = editDay.getText().toString().trim();
+            String newTime = editTime.getText().toString().trim();
+            String newActivity = editActivity.getText().toString().trim();
+
+            if (!newDay.isEmpty() && !newTime.isEmpty() && !newActivity.isEmpty()) {
+                item.setDay(newDay);
+                item.setTime(newTime);
+                item.setActivity(newActivity);
+
+                // Update Firestore
+                db.collection("Users").document(loggedInUsername)
+                        .collection("itineraries").document(item.getId()).set(item)
+                        .addOnSuccessListener(aVoid -> {
+                            itineraryList.set(position, item); // Update local list
+                            notifyDataSetChanged();
+                            dialog.dismiss(); // Close dialog on success
+                        })
+                        .addOnFailureListener(e -> Log.e("Firestore", "Error updating itinerary", e));
+            }
         });
 
-        builder.create().show();
+        dialog.show(); // Show the edit dialog
     }
 
     @Override

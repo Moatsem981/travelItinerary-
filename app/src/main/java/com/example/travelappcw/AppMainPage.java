@@ -19,28 +19,31 @@ public class AppMainPage extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
 
-        // Pass USER_ID to the fragment on first login
+        // Load HomeFragment by default on first login
         if (savedInstanceState == null) {
-            ItineraryFragment itineraryFragment = new ItineraryFragment();
+            HomeFragment homeFragment = new HomeFragment();
             Bundle bundle = new Bundle();
             bundle.putString("USER_ID", loggedInUsername);
-            itineraryFragment.setArguments(bundle);
+            homeFragment.setArguments(bundle);
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, itineraryFragment)
+                    .replace(R.id.fragmentContainer, homeFragment)
                     .commit();
         }
 
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
 
-            if (item.getItemId() == R.id.nav_itinerary) {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                selectedFragment = new HomeFragment();
+            } else if (itemId == R.id.nav_itinerary) {
                 selectedFragment = new ItineraryFragment();
-            } else if (item.getItemId() == R.id.nav_bookings) {
+            } else if (itemId == R.id.nav_bookings) {
                 selectedFragment = new BookingsFragment();
-            } else if (item.getItemId() == R.id.nav_map) {
+            } else if (itemId == R.id.nav_map) {
                 selectedFragment = new MapFragment();
-            } else if (item.getItemId() == R.id.nav_profile) {
+            } else if (itemId == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
             }
 
