@@ -9,21 +9,26 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.firebase.firestore.FirebaseFirestore;
+
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+
 import java.util.List;
 
 public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.ViewHolder> {
 
     private List<ItineraryItem> itineraryList;
-    private FirebaseFirestore db;
-    private String loggedInUsername;
+    private CollectionReference itineraryRef;
+    private Context context;
 
-    public ItineraryAdapter(List<ItineraryItem> itineraryList, FirebaseFirestore db, String loggedInUsername) {
+    public ItineraryAdapter(List<ItineraryItem> itineraryList, CollectionReference itineraryRef, Context context) {
         this.itineraryList = itineraryList;
-        this.db = db;
-        this.loggedInUsername = loggedInUsername;
+        this.itineraryRef = itineraryRef;
+        this.context = context;
     }
 
     @NonNull
@@ -41,18 +46,37 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         holder.timeTextView.setText(item.getTime());
         holder.activityTextView.setText(item.getActivity());
 
-        holder.editButton.setOnClickListener(v -> editItinerary(holder.itemView.getContext(), item, position));
+        // Edit itinerary
+        holder.editButton.setOnClickListener(v -> editItinerary(item, position));
+
+        // Delete itinerary with crash fix
         holder.deleteButton.setOnClickListener(v -> {
-            db.collection("Users").document(loggedInUsername)
-                    .collection("itineraries").document(item.getId()).delete()
+            DocumentReference docRef = itineraryRef.document(item.getId());
+            docRef.delete()
                     .addOnSuccessListener(aVoid -> {
-                        itineraryList.remove(position);
-                        notifyDataSetChanged();
+                        if (position >= 0 && position < itineraryList.size()) { // Prevent index out of bounds
+                            itineraryList.remove(position);
+
+                            // Ensure UI updates on the main thread
+                            if (context instanceof android.app.Activity) {
+                                ((android.app.Activity) context).runOnUiThread(() -> {
+                                    notifyItemRemoved(position);
+                                    Toast.makeText(context, "Itinerary deleted", Toast.LENGTH_SHORT).show();
+                                });
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("Firestore", "Error deleting itinerary", e);
+                        Toast.makeText(context, "Failed to delete itinerary", Toast.LENGTH_SHORT).show();
                     });
         });
     }
 
-    private void editItinerary(Context context, ItineraryItem item, int position) {
+    /**
+     * Opens a dialog for editing an itinerary.
+     */
+    private void editItinerary(ItineraryItem item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_edit_itinerary, null);
         builder.setView(view);
@@ -66,7 +90,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         editTime.setText(item.getTime());
         editActivity.setText(item.getActivity());
 
-        AlertDialog dialog = builder.create(); // Create dialog instance
+        AlertDialog dialog = builder.create();
 
         btnUpdate.setOnClickListener(v -> {
             String newDay = editDay.getText().toString().trim();
@@ -78,19 +102,19 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
                 item.setTime(newTime);
                 item.setActivity(newActivity);
 
-                // Update Firestore
-                db.collection("Users").document(loggedInUsername)
-                        .collection("itineraries").document(item.getId()).set(item)
+                DocumentReference docRef = itineraryRef.document(item.getId());
+                docRef.set(item)
                         .addOnSuccessListener(aVoid -> {
-                            itineraryList.set(position, item); // Update local list
-                            notifyDataSetChanged();
-                            dialog.dismiss(); // Close dialog on success
+                            itineraryList.set(position, item);
+                            notifyItemChanged(position);
+                            dialog.dismiss();
+                            Toast.makeText(context, "Itinerary updated", Toast.LENGTH_SHORT).show();
                         })
                         .addOnFailureListener(e -> Log.e("Firestore", "Error updating itinerary", e));
             }
         });
 
-        dialog.show(); // Show the edit dialog
+        dialog.show();
     }
 
     @Override

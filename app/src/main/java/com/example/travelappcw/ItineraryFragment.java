@@ -33,6 +33,7 @@ public class ItineraryFragment extends Fragment {
     private ItineraryAdapter adapter;
     private List<ItineraryItem> itineraryList = new ArrayList<>();
     private FirebaseFirestore db;
+    private CollectionReference itineraryRef;
     private String loggedInUsername;
 
     public ItineraryFragment() {}
@@ -57,7 +58,7 @@ public class ItineraryFragment extends Fragment {
 
         // Initialize Firestore
         db = FirebaseFirestore.getInstance();
-        CollectionReference itineraryRef = db.collection("Users").document(loggedInUsername).collection("itineraries");
+        itineraryRef = db.collection("Users").document(loggedInUsername).collection("itineraries");
 
         // Initialize UI elements
         inputDay = view.findViewById(R.id.inputDay);
@@ -66,32 +67,20 @@ public class ItineraryFragment extends Fragment {
         addButton = view.findViewById(R.id.addButton);
         recyclerView = view.findViewById(R.id.recyclerViewItinerary);
 
-        // Ensure Button is Not Null
-        if (addButton == null) {
-            Log.e("FirestoreDebug", "addButton is NULL! Check XML ID.");
-            return view;
-        } else {
-            Log.d("FirestoreDebug", "addButton is correctly initialized");
-        }
-
-        // Setup RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ItineraryAdapter(itineraryList, db, loggedInUsername);
+        adapter = new ItineraryAdapter(itineraryList, itineraryRef, getContext());
         recyclerView.setAdapter(adapter);
 
-        // Load itinerary in real-time
-        loadItineraryRealTime(itineraryRef);
+        // Load existing itinerary from Firestore in real-time
+        loadItineraryRealTime();
 
         // Add itinerary button click listener
         addButton.setOnClickListener(v -> {
-            Log.d("FirestoreDebug", "Add Itinerary button clicked");
-
             String day = inputDay.getText().toString().trim();
             String time = inputTime.getText().toString().trim();
             String activity = inputActivity.getText().toString().trim();
 
             if (day.isEmpty() || time.isEmpty() || activity.isEmpty()) {
-                Log.e("FirestoreDebug", "Fields are empty!");
                 Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -100,13 +89,17 @@ public class ItineraryFragment extends Fragment {
 
             itineraryRef.add(item)
                     .addOnSuccessListener(documentReference -> {
-                        Log.d("FirestoreDebug", "Firestore write success! Document ID: " + documentReference.getId());
-                        Toast.makeText(getContext(), "Itinerary added!", Toast.LENGTH_SHORT).show();
-                        clearFields(); // Clear input fields
+                        item.setId(documentReference.getId()); // Store Firestore ID
+                        Log.d("FirestoreDebug", "Itinerary added: " + documentReference.getId());
+
+                        // Clear input fields
+                        clearFields();
+
+                        Toast.makeText(getContext(), "Itinerary added successfully", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(e -> {
-                        Log.e("FirestoreDebug", "Firestore write FAILED!", e);
-                        Toast.makeText(getContext(), "Failed to add itinerary: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e("FirestoreDebug", "Error adding itinerary", e);
+                        Toast.makeText(getContext(), "Failed to add itinerary", Toast.LENGTH_SHORT).show();
                     });
         });
 
@@ -116,25 +109,28 @@ public class ItineraryFragment extends Fragment {
     /**
      * Loads user-specific itineraries from Firestore in real-time.
      */
-    private void loadItineraryRealTime(CollectionReference itineraryRef) {
-        itineraryRef.addSnapshotListener((queryDocumentSnapshots, error) -> {
-            if (error != null) {
-                Log.e("FirestoreDebug", "Failed to load itineraries", error);
-                Toast.makeText(getContext(), "Failed to load itineraries", Toast.LENGTH_SHORT).show();
-                return;
+    private void loadItineraryRealTime() {
+        itineraryRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.e("FirestoreDebug", "Failed to load itineraries", error);
+                    Toast.makeText(getContext(), "Failed to load itineraries", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                itineraryList.clear();
+                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                    ItineraryItem item = document.toObject(ItineraryItem.class);
+                    item.setId(document.getId()); // Store Firestore document ID
+                    itineraryList.add(item);
+                }
+
+                // Refresh RecyclerView on the UI thread
+                requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
+
+                Log.d("FirestoreDebug", "RecyclerView updated with " + itineraryList.size() + " items");
             }
-
-            itineraryList.clear();
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                ItineraryItem item = document.toObject(ItineraryItem.class);
-                item.setId(document.getId()); // Store Firestore document ID
-                itineraryList.add(item);
-            }
-
-            // Refresh RecyclerView on the UI thread
-            getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
-
-            Log.d("FirestoreDebug", "RecyclerView updated with " + itineraryList.size() + " items");
         });
     }
 
