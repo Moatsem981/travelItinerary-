@@ -13,6 +13,9 @@
         android:theme="@style/Theme.TravelAppCw"
         tools:targetApi="31">
         <activity
+            android:name=".ViewHotelsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ItineraryItem"
             android:exported="false" />
         <activity

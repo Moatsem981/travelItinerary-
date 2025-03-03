@@ -1,8 +1,12 @@
 package com.example.travelappcw;
 
 import android.os.Bundle;
+import android.util.Log;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AppMainPage extends AppCompatActivity {
@@ -14,50 +18,74 @@ public class AppMainPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_main_page);
 
-        // Get the logged-in username from the intent
+        // Get the logged-in username
         loggedInUsername = getIntent().getStringExtra("USER_ID");
 
+        // Initialize Bottom Navigation
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
 
-        // Load HomeFragment by default on first login
-        if (savedInstanceState == null) {
-            HomeFragment homeFragment = new HomeFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("USER_ID", loggedInUsername);
-            homeFragment.setArguments(bundle);
+        // Debug log to confirm activity is loaded
+        Log.d("FragmentDebug", "AppMainPage: onCreate() called");
 
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, homeFragment)
-                    .commit();
+        // Load HomeFragment by default if there is no saved state
+        if (savedInstanceState == null) {
+            Log.d("FragmentDebug", "Setting default fragment: HOME_FRAGMENT");
+            loadFragment(new HomeFragment(), "HOME_FRAGMENT");
+            bottomNav.setSelectedItemId(R.id.nav_home);
         }
 
+        // Bottom Navigation Item Selection
         bottomNav.setOnItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
+            Log.d("FragmentDebug", "BottomNav Item Selected: " + item.getItemId());
 
-            int itemId = item.getItemId();
-            if (itemId == R.id.nav_home) {
+            Fragment selectedFragment = null;
+            String tag = null;
+
+            if (item.getItemId() == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
-            } else if (itemId == R.id.nav_itinerary) {
+                tag = "HOME_FRAGMENT";
+            } else if (item.getItemId() == R.id.nav_itinerary) {
                 selectedFragment = new ItineraryFragment();
-            } else if (itemId == R.id.nav_bookings) {
+                tag = "ITINERARY_FRAGMENT";
+            } else if (item.getItemId() == R.id.nav_bookings) {
                 selectedFragment = new BookingsFragment();
-            } else if (itemId == R.id.nav_map) {
+                tag = "BOOKINGS_FRAGMENT";
+            } else if (item.getItemId() == R.id.nav_map) {
                 selectedFragment = new MapFragment();
-            } else if (itemId == R.id.nav_profile) {
+                tag = "MAP_FRAGMENT";
+            } else if (item.getItemId() == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
+                tag = "PROFILE_FRAGMENT";
             }
 
             if (selectedFragment != null) {
-                Bundle bundle = new Bundle();
-                bundle.putString("USER_ID", loggedInUsername);
-                selectedFragment.setArguments(bundle);
-
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, selectedFragment)
-                        .commit();
+                Log.d("FragmentDebug", "Switching to fragment: " + tag);
+                loadFragment(selectedFragment, tag);
+            } else {
+                Log.e("FragmentDebug", "No fragment selected!");
             }
 
             return true;
         });
     }
+
+    /**
+     * Loads the selected fragment into the container.
+     */
+    private void loadFragment(Fragment fragment, String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        if (loggedInUsername != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("USER_ID", loggedInUsername);
+            fragment.setArguments(bundle); // Pass USER_ID to fragment
+        } else {
+            Log.e("FirestoreDebug", "ERROR: USER_ID is NULL in AppMainPage!");
+        }
+
+        transaction.replace(R.id.fragmentContainer, fragment, tag);
+        transaction.commit();
+    }
+
 }

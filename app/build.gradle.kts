@@ -59,6 +59,8 @@ dependencies {
     // Firebase In-App Messaging (Manually Added)
     implementation("com.google.firebase:firebase-inappmessaging-display:20.3.1")
 
+    implementation ("com.squareup.picasso:picasso:2.71828")
+
     // AndroidX Media Library (Manually Added)
     implementation("androidx.media3:media3-common:1.3.1")
 

@@ -4,7 +4,7 @@
     <item
         android:id="@+id/nav_home"
         android:title="Home"
-        android:icon="@drawable/home"/>  <!-- Use your new home icon -->
+        android:icon="@drawable/home"/>
 
     <item
         android:id="@+id/nav_itinerary"
