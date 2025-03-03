@@ -39,8 +39,16 @@ public class ViewHotelsActivity extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     hotelList.clear();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        Hotel hotel = document.toObject(Hotel.class);
-                        hotelList.add(hotel);
+                        if (document.exists()) {
+                            String name = document.getString("name");
+                            String location = document.getString("location");
+                            String price = document.getString("price");
+                            String ratings = document.getString("ratings");
+                            String imageUrl = document.getString("park plaza nottingham2"); // Assuming Firestore stores image URLs here
+
+                            Hotel hotel = new Hotel(name, location, price, ratings, imageUrl);
+                            hotelList.add(hotel);
+                        }
                     }
                     hotelAdapter.notifyDataSetChanged();
                 })
