@@ -15,4 +15,5 @@
     <color name="purple">#6F42C1</color>
     <color name="teal">#20C997</color>
     <color name="background_gray">#F2F2F2</color>
+    <color name="dialog_background">#FFF3E0</color>
 </resources>

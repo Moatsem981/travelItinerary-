@@ -18,11 +18,22 @@ public class ViewHotelsActivity extends AppCompatActivity implements HotelAdapte
     private RecyclerView recyclerView;
     private HotelAdapter hotelAdapter;
     private List<Hotel> hotelList = new ArrayList<>();
+    private String loggedInUsername; // To store the logged-in user ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_hotels_activity);
+
+        // Retrieve USER_ID from the intent
+        loggedInUsername = getIntent().getStringExtra("USER_ID");
+        if (loggedInUsername == null) {
+            Log.e("ViewHotelsActivity", "ERROR: USER_ID is NULL!");
+            Toast.makeText(this, "Error: User not logged in", Toast.LENGTH_SHORT).show();
+            finish(); // Close the activity if USER_ID is not available
+        } else {
+            Log.d("ViewHotelsActivity", "USER_ID: " + loggedInUsername);
+        }
 
         recyclerView = findViewById(R.id.recyclerViewHotels);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -64,8 +75,14 @@ public class ViewHotelsActivity extends AppCompatActivity implements HotelAdapte
     @Override
     public void onReserveButtonClick(Hotel hotel) {
         // Handle Reserve Button Click
-        Intent intent = new Intent(this, HotelDetailsActivity.class);
-        intent.putExtra("hotel", hotel); // Pass the hotel object to HotelDetailsActivity
-        startActivity(intent);
+        if (loggedInUsername != null) {
+            Intent intent = new Intent(this, HotelDetailsActivity.class);
+            intent.putExtra("hotel", hotel); // Pass the hotel object
+            intent.putExtra("USER_ID", loggedInUsername); // Pass the USER_ID
+            startActivity(intent);
+        } else {
+            Log.e("ViewHotelsActivity", "ERROR: USER_ID is NULL!");
+            Toast.makeText(this, "Error: User not logged in", Toast.LENGTH_SHORT).show();
+        }
     }
 }

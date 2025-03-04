@@ -1,7 +1,10 @@
 package com.example.travelappcw;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -20,6 +23,15 @@ public class AppMainPage extends AppCompatActivity {
 
         // Get the logged-in username
         loggedInUsername = getIntent().getStringExtra("USER_ID");
+
+        // Debug log to confirm USER_ID is retrieved
+        Log.d("AppMainPage", "USER_ID: " + loggedInUsername);
+
+        if (loggedInUsername == null) {
+            Log.e("AppMainPage", "ERROR: USER_ID is NULL!");
+            Toast.makeText(this, "Error: User not logged in", Toast.LENGTH_SHORT).show();
+            finish(); // Close the activity if USER_ID is not available
+        }
 
         // Initialize Bottom Navigation
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
@@ -88,4 +100,18 @@ public class AppMainPage extends AppCompatActivity {
         transaction.commit();
     }
 
+    /**
+     * Navigates to HotelDetailsActivity and passes the USER_ID.
+     */
+    public void navigateToHotelDetails(Hotel hotel) {
+        if (loggedInUsername != null) {
+            Intent intent = new Intent(AppMainPage.this, HotelDetailsActivity.class);
+            intent.putExtra("hotel", hotel); // Pass the hotel object
+            intent.putExtra("USER_ID", loggedInUsername); // Pass the USER_ID
+            startActivity(intent);
+        } else {
+            Log.e("AppMainPage", "ERROR: USER_ID is NULL!");
+            Toast.makeText(this, "Error: User not logged in", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

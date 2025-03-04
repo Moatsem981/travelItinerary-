@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.core.content.ContextCompat;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -80,6 +81,9 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_edit_itinerary, null);
         builder.setView(view);
+
+        // Set a custom background color for the dialog
+        view.setBackgroundColor(ContextCompat.getColor(context, R.color.dialog_background));
 
         EditText editDay = view.findViewById(R.id.editDay);
         EditText editTime = view.findViewById(R.id.editTime);

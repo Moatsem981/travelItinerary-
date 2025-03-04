@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:hint="Edit Day"
         android:layout_marginBottom="8dp"
+        android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <!-- Edit Time -->
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:hint="Edit Time"
         android:layout_marginBottom="8dp"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/editDay"/>
 
     <!-- Edit Activity -->
@@ -32,6 +34,7 @@
         android:layout_height="wrap_content"
         android:hint="Edit Activity"
         android:layout_marginBottom="8dp"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/editTime"/>
 
     <!-- Update Button -->
@@ -41,5 +44,7 @@
         android:layout_height="wrap_content"
         android:text="Update"
         app:layout_constraintTop_toBottomOf="@id/editActivity"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

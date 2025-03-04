@@ -1,0 +1,67 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="@color/white">
+
+    <!-- Checkmark Icon -->
+    <ImageView
+        android:id="@+id/checkmarkIcon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/it_checkmark"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/confirmationMessage"
+    android:layout_marginTop="64dp"
+    android:layout_marginBottom="16dp"/>
+
+    <!-- Confirmation Message -->
+    <TextView
+        android:id="@+id/confirmationMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your booking has been confirmed!"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/checkmarkIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Subtitle -->
+    <TextView
+        android:id="@+id/confirmationSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thank you for choosing our service. Your booking details have been sent to your email."
+        android:textSize="16sp"
+        android:textColor="@color/gray"
+        android:gravity="center"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/confirmationMessage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Back to Home Button -->
+    <Button
+        android:id="@+id/backToHomeButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Back to Home"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/black"
+    android:padding="16dp"
+    android:layout_marginTop="32dp"
+    app:layout_constraintTop_toBottomOf="@id/confirmationSubtitle"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:layout_marginBottom="32dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

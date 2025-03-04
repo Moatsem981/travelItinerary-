@@ -1,5 +1,6 @@
 package com.example.travelappcw;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
@@ -23,6 +25,7 @@ public class HotelDetailsActivity extends AppCompatActivity {
     private TextView hotelName, hotelLocation, hotelPrice, hotelRatings, hotelDescription;
     private TextView amenitiesList;
     private Button reserveButton;
+    private String loggedInUsername; // To store the logged-in user ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +43,19 @@ public class HotelDetailsActivity extends AppCompatActivity {
         amenitiesList = findViewById(R.id.amenitiesList);
         reserveButton = findViewById(R.id.reserveButton);
 
-        // Get hotel data from intent
+        // Retrieve USER_ID and hotel object from the intent
+        loggedInUsername = getIntent().getStringExtra("USER_ID");
         Hotel hotel = getIntent().getParcelableExtra("hotel");
+
+        // Debug logs to verify USER_ID and hotel object
+        Log.d("HotelDetailsActivity", "USER_ID: " + loggedInUsername);
+        Log.d("HotelDetailsActivity", "Hotel: " + (hotel != null ? hotel.getName() : "null"));
+
+        if (loggedInUsername == null) {
+            Log.e("HotelDetailsActivity", "ERROR: USER_ID is NULL!");
+            Toast.makeText(this, "Error: User not logged in", Toast.LENGTH_SHORT).show();
+            finish(); // Close the activity if USER_ID is not available
+        }
 
         if (hotel != null) {
             // Log hotel details for debugging
@@ -96,11 +110,21 @@ public class HotelDetailsActivity extends AppCompatActivity {
             }
         } else {
             Log.e("HotelDetails", "Hotel object is null");
+            Toast.makeText(this, "Error: Hotel details not found", Toast.LENGTH_SHORT).show();
+            finish(); // Close the activity if hotel object is null
         }
 
         // Handle Reserve Button Click
         reserveButton.setOnClickListener(v -> {
-            // TODO: Implement Firestore Booking Storage
+            if (hotel != null && loggedInUsername != null) {
+                Intent intent = new Intent(HotelDetailsActivity.this, BookingForm1Activity.class);
+                intent.putExtra("hotel", hotel); // Pass the hotel object
+                intent.putExtra("USER_ID", loggedInUsername); // Pass the USER_ID
+                startActivity(intent);
+            } else {
+                Log.e("HotelDetailsActivity", "Hotel or USER_ID is null");
+                Toast.makeText(this, "Error: Hotel details or user not found", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }
