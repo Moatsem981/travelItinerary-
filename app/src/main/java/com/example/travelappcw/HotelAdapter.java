@@ -1,24 +1,35 @@
 package com.example.travelappcw;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 
 public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.HotelViewHolder> {
 
     private Context context;
     private List<Hotel> hotelList;
+    private OnReserveButtonClickListener reserveButtonClickListener;
 
-    public HotelAdapter(Context context, List<Hotel> hotelList) {
+    // Interface for button click listener
+    public interface OnReserveButtonClickListener {
+        void onReserveButtonClick(Hotel hotel);
+    }
+
+    public HotelAdapter(Context context, List<Hotel> hotelList, OnReserveButtonClickListener listener) {
         this.context = context;
         this.hotelList = hotelList;
+        this.reserveButtonClickListener = listener;
     }
 
     @NonNull
@@ -32,21 +43,40 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.HotelViewHol
     public void onBindViewHolder(@NonNull HotelViewHolder holder, int position) {
         Hotel hotel = hotelList.get(position);
 
-        // Prevent crash by checking if fields are null
+        // Set hotel details
         holder.hotelName.setText(hotel.getName() != null ? hotel.getName() : "Hotel Name Not Available");
         holder.hotelLocation.setText(hotel.getLocation() != null ? hotel.getLocation() : "Location Unknown");
         holder.hotelPrice.setText(hotel.getPrice() != null ? "Price: " + hotel.getPrice() : "Price: N/A");
         holder.hotelRatings.setText(hotel.getRatings() != null ? "⭐ " + hotel.getRatings() : "⭐ N/A");
 
-        // Handle Image Loading with Placeholder
-        if (hotel.getImageUrl() != null && !hotel.getImageUrl().isEmpty()) {
+        // Load image with Glide
+        if (hotel.getImageUrls() != null && !hotel.getImageUrls().isEmpty()) {
+            // Use the first image URL from the list
+            String firstImageUrl = hotel.getImageUrls().get(0);
             Glide.with(context)
-                    .load(hotel.getImageUrl())
-                    .placeholder(R.drawable.default_hotel) // Use a valid drawable
+                    .load(firstImageUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .placeholder(R.drawable.default_hotel)
+                    .error(R.drawable.default_hotel)
                     .into(holder.hotelImage);
         } else {
-            holder.hotelImage.setImageResource(R.drawable.default_hotel); // Fallback image
+            holder.hotelImage.setImageResource(R.drawable.default_hotel);
         }
+
+        // ✅ Navigate to HotelDetailsActivity when clicking on a hotel
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, HotelDetailsActivity.class);
+            intent.putExtra("hotel", hotel); // Pass the entire hotel object
+            context.startActivity(intent);
+        });
+
+        // ✅ Set click listener for the Reserve Button
+        holder.reserveButton.setOnClickListener(v -> {
+            if (reserveButtonClickListener != null) {
+                reserveButtonClickListener.onReserveButtonClick(hotel);
+            }
+        });
     }
 
     @Override
@@ -57,6 +87,7 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.HotelViewHol
     public static class HotelViewHolder extends RecyclerView.ViewHolder {
         TextView hotelName, hotelLocation, hotelPrice, hotelRatings;
         ImageView hotelImage;
+        Button reserveButton; // Reserve Button
 
         public HotelViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,6 +96,7 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.HotelViewHol
             hotelPrice = itemView.findViewById(R.id.hotelPrice);
             hotelRatings = itemView.findViewById(R.id.hotelRatings);
             hotelImage = itemView.findViewById(R.id.hotelImage);
+            reserveButton = itemView.findViewById(R.id.reserveButton); // Initialize Reserve Button
         }
     }
 }

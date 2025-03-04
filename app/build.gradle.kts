@@ -52,6 +52,7 @@ dependencies {
 
     // Firebase Database (Manually Added)
     implementation("com.google.firebase:firebase-database-ktx:20.3.1")
+    implementation ("com.google.android.material:material:1.11.0")
 
     // RecyclerView (Manually Added)
     implementation("androidx.recyclerview:recyclerview:1.3.2")

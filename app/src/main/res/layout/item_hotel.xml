@@ -41,8 +41,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
             android:paddingTop="4dp"/>
 
         <TextView
@@ -50,7 +48,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@android:color/holo_blue_dark"
             android:paddingTop="4dp"/>
+
+        <!-- Add Reserve Button -->
+        <Button
+            android:id="@+id/reserveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reserve"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/dark_blue"
+        android:textColor="@android:color/white"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
