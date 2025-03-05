@@ -1,20 +1,17 @@
 package com.example.travelappcw;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -28,14 +25,7 @@ public class LoginSignUpPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.login_signup_page);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         // Initialize Firestore
         db = FirebaseFirestore.getInstance();
@@ -57,9 +47,7 @@ public class LoginSignUpPage extends AppCompatActivity {
         });
 
         // Forgot Password Click Listener
-        forgotPassword.setOnClickListener(v -> {
-            Toast.makeText(LoginSignUpPage.this, "Password reset feature coming soon!", Toast.LENGTH_SHORT).show();
-        });
+        forgotPassword.setOnClickListener(v -> showPasswordResetDialog());
     }
 
     private void loginUser() {
@@ -92,5 +80,45 @@ public class LoginSignUpPage extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> Toast.makeText(LoginSignUpPage.this, "Login failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
+    private void showPasswordResetDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Reset Password");
+
+        final EditText input = new EditText(this);
+        input.setHint("Enter your username");
+        builder.setView(input);
+
+        builder.setPositiveButton("Send Reset Email", (dialog, which) -> {
+            String username = input.getText().toString().trim();
+
+            if (TextUtils.isEmpty(username)) {
+                Toast.makeText(LoginSignUpPage.this, "Please enter your username", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // 🔥 Fetch user's real email from Firestore
+            db.collection("Users").document(username)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String email = documentSnapshot.getString("email"); // Get the real email
+
+                            if (email != null) {
+                                FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                                        .addOnSuccessListener(aVoid -> Toast.makeText(LoginSignUpPage.this, "Password reset email sent!", Toast.LENGTH_LONG).show())
+                                        .addOnFailureListener(e -> Toast.makeText(LoginSignUpPage.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                            } else {
+                                Toast.makeText(LoginSignUpPage.this, "No email found for this username", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(LoginSignUpPage.this, "User not found", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.show();
     }
 }

@@ -90,6 +90,26 @@
                 android:textColorHint="#B0B0B0"
                 android:padding="10dp"/>
 
+            <!-- Email Input (🔥 NEW FIELD ADDED) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email Address"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:layout_marginTop="10dp"/>
+
+            <EditText
+                android:id="@+id/emailInput"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/input_field"
+                android:hint="Enter Email Address"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#B0B0B0"
+                android:padding="10dp"
+                android:inputType="textEmailAddress"/>
+
             <!-- Password Input -->
             <TextView
                 android:layout_width="wrap_content"

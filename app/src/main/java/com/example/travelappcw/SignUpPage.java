@@ -3,17 +3,12 @@ package com.example.travelappcw;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,7 +19,7 @@ import java.util.Map;
 
 public class SignUpPage extends AppCompatActivity {
 
-    private EditText fullNameInput, usernameInput, passwordInput, confirmPasswordInput;
+    private EditText fullNameInput, usernameInput, emailInput, passwordInput, confirmPasswordInput;
     private Button registerButton;
     private TextView alreadyHaveAccount;
     private FirebaseAuth auth;
@@ -33,54 +28,50 @@ public class SignUpPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.sign_up_page);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
-        // Initialize Firebase Auth & Firestore
+        // Initialize Firebase
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         // Initialize UI elements
         fullNameInput = findViewById(R.id.fullNameInput);
         usernameInput = findViewById(R.id.usernameInput);
+        emailInput = findViewById(R.id.emailInput); // 🔥
         passwordInput = findViewById(R.id.passwordInput);
         confirmPasswordInput = findViewById(R.id.confirmPasswordInput);
         registerButton = findViewById(R.id.registerButton);
         alreadyHaveAccount = findViewById(R.id.alreadyHaveAccount);
 
-        // Sign Up Button Click Listener
+        // Register button listener
         registerButton.setOnClickListener(v -> registerUser());
     }
 
     private void registerUser() {
         String fullName = fullNameInput.getText().toString().trim();
         String username = usernameInput.getText().toString().trim();
+        String email = emailInput.getText().toString().trim(); // 🔥 Collect real email
         String password = passwordInput.getText().toString().trim();
         String confirmPassword = confirmPasswordInput.getText().toString().trim();
 
-        if (TextUtils.isEmpty(fullName) || TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
-            Toast.makeText(SignUpPage.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(fullName) || TextUtils.isEmpty(username) || TextUtils.isEmpty(email)
+                || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (!password.equals(confirmPassword)) {
-            Toast.makeText(SignUpPage.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Register user with Firebase Authentication
-        auth.createUserWithEmailAndPassword(username + "@nexttrip.com", password)
+        auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = auth.getCurrentUser();
                         if (user != null) {
-                            saveUserToFirestore(user.getUid(), fullName, username);
+                            saveUserToFirestore(user.getUid(), fullName, username, email);
                         }
                     } else {
                         Toast.makeText(SignUpPage.this, "Sign-Up Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -88,10 +79,11 @@ public class SignUpPage extends AppCompatActivity {
                 });
     }
 
-    private void saveUserToFirestore(String userId, String fullName, String username) {
+    private void saveUserToFirestore(String userId, String fullName, String username, String email) {
         Map<String, Object> user = new HashMap<>();
         user.put("fullName", fullName);
         user.put("username", username);
+        user.put("email", email); // 🔥 Store the real email
 
         db.collection("Users").document(username)
                 .set(user)
