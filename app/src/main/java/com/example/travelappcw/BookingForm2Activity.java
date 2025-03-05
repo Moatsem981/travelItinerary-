@@ -27,7 +27,7 @@ public class BookingForm2Activity extends AppCompatActivity {
         continueToPaymentButton = findViewById(R.id.continueToPaymentButton);
 
         // Retrieve loggedInUsername and hotel object
-        loggedInUsername = getIntent().getStringExtra("LOGGED_IN_USERNAME");
+        loggedInUsername = getIntent().getStringExtra("USER_ID");
         hotel = getIntent().getParcelableExtra("hotel");
 
         // Debugging
@@ -51,7 +51,7 @@ public class BookingForm2Activity extends AppCompatActivity {
                 intent.putExtra("email", userEmail);
                 intent.putExtra("phone", phoneNumber);
                 intent.putExtra("hotel", hotel);
-                intent.putExtra("LOGGED_IN_USERNAME", loggedInUsername);
+                intent.putExtra("USER_ID", loggedInUsername);
                 startActivity(intent);
             }
         });

@@ -7,10 +7,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,13 +15,12 @@ import java.util.Map;
 public class PaymentFormActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
-    private FirebaseAuth auth;
     private TextView totalCostTextView;
     private Button confirmPaymentButton;
     private ProgressDialog progressDialog;
 
     private String checkIn, checkOut, guests, specialRequests, fullName, userEmail, phoneNumber;
-    private String loggedInEmail, correctUsername;
+    private String loggedInUsername;  // 🔥 Now using username like in ItineraryFragment
     private Hotel hotel;
 
     @Override
@@ -32,9 +28,8 @@ public class PaymentFormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_form);
 
-        // Initialize Firestore and FirebaseAuth
+        // Initialize Firestore
         db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
 
         // Initialize UI components
         totalCostTextView = findViewById(R.id.totalCostTextView);
@@ -56,15 +51,17 @@ public class PaymentFormActivity extends AppCompatActivity {
         phoneNumber = intent.getStringExtra("phone");
         hotel = intent.getParcelableExtra("hotel");
 
-        // Get logged-in user's email from FirebaseAuth
-        if (auth.getCurrentUser() != null) {
-            loggedInEmail = auth.getCurrentUser().getEmail();
-            Log.d("PaymentFormActivity", "Logged in with email: " + loggedInEmail);
-            fetchCorrectUsername();
-        } else {
-            Log.e("PaymentFormActivity", "Error: No user logged in!");
+        // ✅ Get the logged-in username, just like ItineraryFragment does!
+        loggedInUsername = intent.getStringExtra("USER_ID");
+
+        if (loggedInUsername == null || loggedInUsername.isEmpty()) {
+            Log.e("PaymentFormActivity", "Error: No logged-in user found!");
             Toast.makeText(this, "Error: User is not logged in!", Toast.LENGTH_LONG).show();
+            finish(); // Close activity if no user is logged in
+            return;
         }
+
+        Log.d("PaymentFormActivity", "Logged in username: " + loggedInUsername);
 
         // Set total cost dynamically if available
         if (hotel != null) {
@@ -78,45 +75,19 @@ public class PaymentFormActivity extends AppCompatActivity {
         confirmPaymentButton.setOnClickListener(v -> processPayment());
     }
 
-    /**
-     * Fetches the correct username from Firestore using the logged-in email.
-     */
-    private void fetchCorrectUsername() {
-        if (loggedInEmail == null) {
-            Log.e("PaymentFormActivity", "Error: No email found for logged-in user!");
-            return;
-        }
-
-        // Query Firestore: Find user document where "email" matches
-        db.collection("Users")
-                .whereEqualTo("email", loggedInEmail)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
-                        correctUsername = document.getId(); // Get username from document ID
-                        Log.d("PaymentFormActivity", "Correct Username found: " + correctUsername);
-                    } else {
-                        Log.e("PaymentFormActivity", "No user found with email: " + loggedInEmail);
-                        Toast.makeText(this, "User data not found!", Toast.LENGTH_LONG).show();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("PaymentFormActivity", "Error fetching username", e);
-                    Toast.makeText(this, "Error fetching user data!", Toast.LENGTH_LONG).show();
-                });
-    }
-
     private void processPayment() {
         progressDialog.show();
 
         // Ensure correct username is fetched
-        if (correctUsername == null || correctUsername.isEmpty()) {
-            Log.e("PaymentFormActivity", "Error: correctUsername is null or empty!");
-            Toast.makeText(this, "Error: User not recognized!", Toast.LENGTH_LONG).show();
-            progressDialog.dismiss();
+        if (loggedInUsername == null || loggedInUsername.isEmpty()) {
+            Log.e("PaymentFormActivity", "❌ ERROR: No user logged in! USER_ID is NULL.");
+            Toast.makeText(this, "Error: User is not logged in!", Toast.LENGTH_LONG).show();
+            finish();
             return;
+        } else {
+            Log.d("PaymentFormActivity", "✅ User logged in as: " + loggedInUsername);
         }
+
 
         if (hotel == null) {
             Log.e("PaymentFormActivity", "Error: Hotel is null!");
@@ -132,7 +103,7 @@ public class PaymentFormActivity extends AppCompatActivity {
             return;
         }
 
-        // Save booking to Firestore under "Users/{correctUsername}/Bookings/"
+        // Save booking to Firestore under "Users/{loggedInUsername}/Bookings/"
         saveBookingToFirestore();
     }
 
@@ -159,11 +130,11 @@ public class PaymentFormActivity extends AppCompatActivity {
 
         // Save booking under correct user in Firestore
         db.collection("Users")
-                .document(correctUsername)
+                .document(loggedInUsername)  // ✅ Store under the correct username
                 .collection("Bookings")
                 .add(booking)
                 .addOnSuccessListener(documentReference -> {
-                    Log.d("PaymentFormActivity", "Booking saved under Users/" + correctUsername + "/Bookings/");
+                    Log.d("PaymentFormActivity", "Booking saved under Users/" + loggedInUsername + "/Bookings/");
                     Toast.makeText(this, "Payment Successful!", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
 

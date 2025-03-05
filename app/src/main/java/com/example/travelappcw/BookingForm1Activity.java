@@ -32,7 +32,15 @@ public class BookingForm1Activity extends AppCompatActivity {
         continueButton = findViewById(R.id.continueButton);
 
         // Retrieve loggedInUsername and hotel object
-        loggedInUsername = getIntent().getStringExtra("LOGGED_IN_USERNAME");
+        loggedInUsername = getIntent().getStringExtra("USER_ID");
+
+        if (loggedInUsername == null || loggedInUsername.isEmpty()) {
+            Log.e("BookingForm1Activity", " ERROR: USER_ID is NULL!");
+            Toast.makeText(this, "Error: User not logged in!", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
         hotel = getIntent().getParcelableExtra("hotel");
 
         // Debugging
@@ -59,7 +67,7 @@ public class BookingForm1Activity extends AppCompatActivity {
                 intent.putExtra("guests", numGuests);
                 intent.putExtra("specialRequests", requests);
                 intent.putExtra("hotel", hotel);
-                intent.putExtra("LOGGED_IN_USERNAME", loggedInUsername);
+                intent.putExtra("USER_ID", loggedInUsername);
                 startActivity(intent);
             }
         });
