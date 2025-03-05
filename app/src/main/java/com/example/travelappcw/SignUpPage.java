@@ -30,11 +30,11 @@ public class SignUpPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up_page);
 
-        // Initialize Firebase
+
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Initialize UI elements
+
         fullNameInput = findViewById(R.id.fullNameInput);
         usernameInput = findViewById(R.id.usernameInput);
         emailInput = findViewById(R.id.emailInput); // 🔥

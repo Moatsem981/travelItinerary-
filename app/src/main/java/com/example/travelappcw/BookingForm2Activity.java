@@ -20,17 +20,14 @@ public class BookingForm2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_form2);
 
-        // Initialize views
         name = findViewById(R.id.name);
         email = findViewById(R.id.email);
         phone = findViewById(R.id.phone);
         continueToPaymentButton = findViewById(R.id.continueToPaymentButton);
 
-        // Retrieve loggedInUsername and hotel object
         loggedInUsername = getIntent().getStringExtra("USER_ID");
         hotel = getIntent().getParcelableExtra("hotel");
 
-        // Debugging
         Log.d("BookingForm2Activity", "Logged in username: " + loggedInUsername);
         Log.d("BookingForm2Activity", "Hotel: " + (hotel != null ? hotel.getName() : "null"));
 

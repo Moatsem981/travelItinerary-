@@ -31,7 +31,6 @@ public class BookingForm1Activity extends AppCompatActivity {
         specialRequests = findViewById(R.id.specialRequests);
         continueButton = findViewById(R.id.continueButton);
 
-        // Retrieve loggedInUsername and hotel object
         loggedInUsername = getIntent().getStringExtra("USER_ID");
 
         if (loggedInUsername == null || loggedInUsername.isEmpty()) {
@@ -43,15 +42,12 @@ public class BookingForm1Activity extends AppCompatActivity {
 
         hotel = getIntent().getParcelableExtra("hotel");
 
-        // Debugging
         Log.d("BookingForm1Activity", "Logged in username: " + loggedInUsername);
         Log.d("BookingForm1Activity", "Hotel: " + (hotel != null ? hotel.getName() : "null"));
 
-        // Set up date pickers
         checkInDate.setOnClickListener(v -> showDatePicker(checkInDate));
         checkOutDate.setOnClickListener(v -> showDatePicker(checkOutDate));
 
-        // Continue button click listener
         continueButton.setOnClickListener(v -> {
             String checkIn = checkInDate.getText().toString().trim();
             String checkOut = checkOutDate.getText().toString().trim();

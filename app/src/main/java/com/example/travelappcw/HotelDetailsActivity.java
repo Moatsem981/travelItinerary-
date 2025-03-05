@@ -25,14 +25,14 @@ public class HotelDetailsActivity extends AppCompatActivity {
     private TextView hotelName, hotelLocation, hotelPrice, hotelRatings, hotelDescription;
     private TextView amenitiesList;
     private Button reserveButton;
-    private String loggedInUsername; // To store the logged-in user ID
+    private String loggedInUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hotel_details);
 
-        // Initialize views
+
         imageSlider = findViewById(R.id.imageSlider);
         tabLayout = findViewById(R.id.tabLayout);
         hotelName = findViewById(R.id.hotelName);
@@ -43,50 +43,41 @@ public class HotelDetailsActivity extends AppCompatActivity {
         amenitiesList = findViewById(R.id.amenitiesList);
         reserveButton = findViewById(R.id.reserveButton);
 
-        // Retrieve USER_ID and hotel object from the intent
         loggedInUsername = getIntent().getStringExtra("USER_ID");
         Hotel hotel = getIntent().getParcelableExtra("hotel");
 
-        // Debug logs to verify USER_ID and hotel object
         Log.d("HotelDetailsActivity", "USER_ID: " + loggedInUsername);
         Log.d("HotelDetailsActivity", "Hotel: " + (hotel != null ? hotel.getName() : "null"));
 
         if (loggedInUsername == null) {
             Log.e("HotelDetailsActivity", "ERROR: USER_ID is NULL!");
             Toast.makeText(this, "Error: User not logged in", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity if USER_ID is not available
+            finish();
         }
 
         if (hotel != null) {
-            // Log hotel details for debugging
             Log.d("HotelDetails", "Hotel Name: " + hotel.getName());
             Log.d("HotelDetails", "Image URLs: " + hotel.getImageUrls());
 
-            // Set hotel details
             hotelName.setText(hotel.getName());
             hotelLocation.setText(hotel.getLocation());
             hotelPrice.setText(hotel.getPrice());
 
-            // Set ratings with a yellow star
             String ratingsText = "⭐ " + hotel.getRatings();
             SpannableString spannableString = new SpannableString(ratingsText);
             spannableString.setSpan(
-                    new ForegroundColorSpan(Color.YELLOW), // Yellow color
-                    0, 1, // Apply to the first character (the star)
+                    new ForegroundColorSpan(Color.YELLOW),
+                    0, 1,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             );
             hotelRatings.setText(spannableString);
-
             hotelDescription.setText(hotel.getDescription());
 
-            // Set amenities
             StringBuilder amenitiesText = new StringBuilder();
             for (String amenity : hotel.getAmenities()) {
                 amenitiesText.append("• ").append(amenity).append("\n");
             }
             amenitiesList.setText(amenitiesText.toString());
-
-            // Filter out invalid or empty image URLs
             List<String> validImageUrls = new ArrayList<>();
             for (String url : hotel.getImageUrls()) {
                 if (url != null && !url.isEmpty() && !url.equals("https://via.placeholder.com/800x600.png?text=Hotel+Image")) {
@@ -94,32 +85,28 @@ public class HotelDetailsActivity extends AppCompatActivity {
                 }
             }
 
-            // Set up image slider only if there are valid image URLs
             if (!validImageUrls.isEmpty()) {
                 ImageSliderAdapter adapter = new ImageSliderAdapter(validImageUrls);
                 imageSlider.setAdapter(adapter);
 
-                // Connect TabLayout with ViewPager2
+
                 new TabLayoutMediator(tabLayout, imageSlider, (tab, position) -> {
-                    // You can customize the tab indicators here
                 }).attach();
             } else {
-                // Hide the image slider if there are no valid images
                 imageSlider.setVisibility(View.GONE);
                 tabLayout.setVisibility(View.GONE);
             }
         } else {
             Log.e("HotelDetails", "Hotel object is null");
             Toast.makeText(this, "Error: Hotel details not found", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity if hotel object is null
+            finish();
         }
 
-        // Handle Reserve Button Click
         reserveButton.setOnClickListener(v -> {
             if (hotel != null && loggedInUsername != null) {
                 Intent intent = new Intent(HotelDetailsActivity.this, BookingForm1Activity.class);
-                intent.putExtra("hotel", hotel); // Pass the hotel object
-                intent.putExtra("USER_ID", loggedInUsername); // Pass the USER_ID
+                intent.putExtra("hotel", hotel);
+                intent.putExtra("USER_ID", loggedInUsername);
                 startActivity(intent);
             } else {
                 Log.e("HotelDetailsActivity", "Hotel or USER_ID is null");

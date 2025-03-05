@@ -47,18 +47,16 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         holder.timeTextView.setText(item.getTime());
         holder.activityTextView.setText(item.getActivity());
 
-        // Edit itinerary
+
         holder.editButton.setOnClickListener(v -> editItinerary(item, position));
 
-        // Delete itinerary with crash fix
         holder.deleteButton.setOnClickListener(v -> {
             DocumentReference docRef = itineraryRef.document(item.getId());
             docRef.delete()
                     .addOnSuccessListener(aVoid -> {
-                        if (position >= 0 && position < itineraryList.size()) { // Prevent index out of bounds
+                        if (position >= 0 && position < itineraryList.size()) {
                             itineraryList.remove(position);
 
-                            // Ensure UI updates on the main thread
                             if (context instanceof android.app.Activity) {
                                 ((android.app.Activity) context).runOnUiThread(() -> {
                                     notifyItemRemoved(position);
@@ -74,15 +72,13 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         });
     }
 
-    /**
-     * Opens a dialog for editing an itinerary.
-     */
+
     private void editItinerary(ItineraryItem item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_edit_itinerary, null);
         builder.setView(view);
 
-        // Set a custom background color for the dialog
+
         view.setBackgroundColor(ContextCompat.getColor(context, R.color.dialog_background));
 
         EditText editDay = view.findViewById(R.id.editDay);

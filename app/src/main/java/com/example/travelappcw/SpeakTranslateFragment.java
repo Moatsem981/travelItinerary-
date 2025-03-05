@@ -50,7 +50,6 @@ public class SpeakTranslateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_speaktranslate, container, false);
 
-        // Initialize UI components
         sourceLanguageSpinner = view.findViewById(R.id.sourceLanguageSpinner);
         targetLanguageSpinner = view.findViewById(R.id.targetLanguageSpinner);
         speechInputText = view.findViewById(R.id.speechInputText);
@@ -58,22 +57,18 @@ public class SpeakTranslateFragment extends Fragment {
         micButton = view.findViewById(R.id.micButton);
         translateButton = view.findViewById(R.id.translateButton);
 
-        // Set up language spinners
         setupLanguageSpinners();
 
-        // Initialize Speech Recognizer
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getContext());
 
-        // Microphone Button Click - Start Speech Recognition
         micButton.setOnClickListener(v -> startSpeechRecognition());
 
-        // Translate Button Click
         translateButton.setOnClickListener(v -> translateText());
 
         return view;
     }
 
-    // Set up language selection Spinners
+
     private void setupLanguageSpinners() {
         String[] languages = {"English", "French", "Spanish", "German", "Chinese", "Japanese"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, languages);
@@ -81,7 +76,6 @@ public class SpeakTranslateFragment extends Fragment {
         targetLanguageSpinner.setAdapter(adapter);
     }
 
-    // Start Speech Recognition
     private void startSpeechRecognition() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -102,7 +96,7 @@ public class SpeakTranslateFragment extends Fragment {
         }
     }
 
-    // Translate Text using Firebase ML Kit
+
     private void translateText() {
         String textToTranslate = speechInputText.getText().toString();
         if (textToTranslate.isEmpty()) {
@@ -110,11 +104,9 @@ public class SpeakTranslateFragment extends Fragment {
             return;
         }
 
-        // Get selected languages
         String sourceLang = getLanguageCode(sourceLanguageSpinner.getSelectedItem().toString());
         String targetLang = getLanguageCode(targetLanguageSpinner.getSelectedItem().toString());
 
-        // Configure Translator
         TranslatorOptions options =
                 new TranslatorOptions.Builder()
                         .setSourceLanguage(sourceLang)
@@ -123,10 +115,8 @@ public class SpeakTranslateFragment extends Fragment {
 
         translator = Translation.getClient(options);
 
-        // Download required translation model
         translator.downloadModelIfNeeded()
                 .addOnSuccessListener(unused -> {
-                    // Perform translation
                     translator.translate(textToTranslate)
                             .addOnSuccessListener(translated -> translatedText.setText(translated))
                             .addOnFailureListener(e ->
@@ -135,7 +125,6 @@ public class SpeakTranslateFragment extends Fragment {
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Model download failed: " + e.getMessage(), Toast.LENGTH_LONG).show());
     }
 
-    // Map languages to Firebase ML Kit language codes
     private String getLanguageCode(String language) {
         Map<String, String> languageMap = new HashMap<>();
         languageMap.put("English", TranslateLanguage.ENGLISH);

@@ -38,10 +38,9 @@ public class ItineraryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate the layout
+
         View view = inflater.inflate(R.layout.fragment_itinerary, container, false);
 
-        // Retrieve USER_ID from arguments (passed from AppMainPage)
         if (getArguments() != null) {
             loggedInUsername = getArguments().getString("USER_ID");
         }
@@ -54,18 +53,15 @@ public class ItineraryFragment extends Fragment {
 
         Log.d("FirestoreDebug", "ItineraryFragment loaded for user: " + loggedInUsername);
 
-        // Initialize Firestore
         db = FirebaseFirestore.getInstance();
         itineraryRef = db.collection("Users").document(loggedInUsername).collection("itineraries");
 
-        // Initialize UI elements
         inputDay = view.findViewById(R.id.inputDay);
         inputTime = view.findViewById(R.id.inputTime);
         inputActivity = view.findViewById(R.id.inputActivity);
         addButton = view.findViewById(R.id.addButton);
         recyclerView = view.findViewById(R.id.recyclerViewItinerary);
 
-        // 🔍 Debugging: Log if any of these are null
         if (inputDay == null) Log.e("ItineraryFragment", "inputDay is null! Check XML ID.");
         if (inputTime == null) Log.e("ItineraryFragment", "inputTime is null! Check XML ID.");
         if (inputActivity == null) Log.e("ItineraryFragment", "inputActivity is null! Check XML ID.");
@@ -78,10 +74,8 @@ public class ItineraryFragment extends Fragment {
             recyclerView.setAdapter(adapter);
         }
 
-        // Load existing itinerary from Firestore in real-time
         loadItineraryRealTime();
 
-        // Add itinerary button click listener
         if (addButton != null) {
             addButton.setOnClickListener(v -> addItinerary());
         } else {
@@ -91,9 +85,7 @@ public class ItineraryFragment extends Fragment {
         return view;
     }
 
-    /**
-     * Adds a new itinerary item to Firestore.
-     */
+
     private void addItinerary() {
         String day = inputDay.getText().toString().trim();
         String time = inputTime.getText().toString().trim();
@@ -119,9 +111,7 @@ public class ItineraryFragment extends Fragment {
                 });
     }
 
-    /**
-     * Loads user-specific itineraries from Firestore in real-time.
-     */
+
     private void loadItineraryRealTime() {
         itineraryRef.addSnapshotListener((queryDocumentSnapshots, error) -> {
             if (error != null) {
@@ -143,9 +133,7 @@ public class ItineraryFragment extends Fragment {
         });
     }
 
-    /**
-     * Clears input fields after adding an itinerary.
-     */
+
     private void clearFields() {
         inputDay.setText("");
         inputTime.setText("");

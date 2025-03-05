@@ -17,14 +17,14 @@ public class HomeFragment extends Fragment {
     private String loggedInUsername;
 
     public HomeFragment() {
-        // Required empty constructor
+
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Retrieve USER_ID from arguments
+
         Bundle args = getArguments();
         if (args != null) {
             loggedInUsername = args.getString("USER_ID");

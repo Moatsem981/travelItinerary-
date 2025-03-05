@@ -128,9 +128,8 @@ public class PaymentFormActivity extends AppCompatActivity {
         hotelMap.put("imageUrls", hotel.getImageUrls());
         booking.put("hotel", hotelMap);
 
-        // Save booking under correct user in Firestore
         db.collection("Users")
-                .document(loggedInUsername)  // ✅ Store under the correct username
+                .document(loggedInUsername)
                 .collection("Bookings")
                 .add(booking)
                 .addOnSuccessListener(documentReference -> {
@@ -138,7 +137,6 @@ public class PaymentFormActivity extends AppCompatActivity {
                     Toast.makeText(this, "Payment Successful!", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
 
-                    // Navigate to confirmation screen
                     Intent intent = new Intent(this, ConfirmationActivity.class);
                     startActivity(intent);
                     finish();

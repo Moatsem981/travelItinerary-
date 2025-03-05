@@ -27,26 +27,21 @@ public class LoginSignUpPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_signup_page);
 
-        // Initialize Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Find UI elements
         usernameInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         signInButton = findViewById(R.id.signInButton);
         signUpButton = findViewById(R.id.signUpButton);
         forgotPassword = findViewById(R.id.forgotPassword);
 
-        // Sign In Button Click Listener
         signInButton.setOnClickListener(v -> loginUser());
 
-        // Sign Up Button Click Listener
         signUpButton.setOnClickListener(v -> {
             Intent intent = new Intent(LoginSignUpPage.this, SignUpPage.class);
             startActivity(intent);
         });
 
-        // Forgot Password Click Listener
         forgotPassword.setOnClickListener(v -> showPasswordResetDialog());
     }
 
@@ -98,12 +93,11 @@ public class LoginSignUpPage extends AppCompatActivity {
                 return;
             }
 
-            // 🔥 Fetch user's real email from Firestore
             db.collection("Users").document(username)
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
-                            String email = documentSnapshot.getString("email"); // Get the real email
+                            String email = documentSnapshot.getString("email");
 
                             if (email != null) {
                                 FirebaseAuth.getInstance().sendPasswordResetEmail(email)

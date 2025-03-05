@@ -25,7 +25,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        // Initialize MapView
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
@@ -37,10 +36,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
 
-        // Set map settings
         gMap.getUiSettings().setZoomControlsEnabled(true);
 
-        // Example: Add marker at a specific location (e.g., London)
         LatLng location = new LatLng(51.5074, -0.1278); // London coordinates
         gMap.addMarker(new MarkerOptions().position(location).title("London, UK"));
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12f));

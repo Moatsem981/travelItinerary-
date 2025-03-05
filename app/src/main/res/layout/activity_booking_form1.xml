@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- Check-in Date -->
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/checkInDateLayout"
         android:layout_width="0dp"
@@ -23,7 +23,7 @@
             android:clickable="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Check-out Date -->
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/checkOutDateLayout"
         android:layout_width="0dp"
@@ -42,7 +42,7 @@
             android:clickable="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Number of Guests -->
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/guestsLayout"
         android:layout_width="0dp"

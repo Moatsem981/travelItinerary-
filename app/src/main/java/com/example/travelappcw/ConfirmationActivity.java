@@ -13,18 +13,16 @@ public class ConfirmationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmation);
 
-        // Initialize the Back to Home button
         Button backToHomeButton = findViewById(R.id.backToHomeButton);
 
-        // Set click listener for the button
+
         backToHomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate back to AppMainPage
                 Intent intent = new Intent(ConfirmationActivity.this, AppMainPage.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP); // Clear the back stack
                 startActivity(intent);
-                finish(); // Close the current activity
+                finish();
             }
         });
     }

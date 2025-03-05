@@ -21,7 +21,7 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.HotelViewHol
     private List<Hotel> hotelList;
     private OnReserveButtonClickListener reserveButtonClickListener;
 
-    // Interface for button click listener
+
     public interface OnReserveButtonClickListener {
         void onReserveButtonClick(Hotel hotel);
     }
@@ -43,15 +43,15 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.HotelViewHol
     public void onBindViewHolder(@NonNull HotelViewHolder holder, int position) {
         Hotel hotel = hotelList.get(position);
 
-        // Set hotel details
+
         holder.hotelName.setText(hotel.getName() != null ? hotel.getName() : "Hotel Name Not Available");
         holder.hotelLocation.setText(hotel.getLocation() != null ? hotel.getLocation() : "Location Unknown");
         holder.hotelPrice.setText(hotel.getPrice() != null ? "Price: " + hotel.getPrice() : "Price: N/A");
         holder.hotelRatings.setText(hotel.getRatings() != null ? "⭐ " + hotel.getRatings() : "⭐ N/A");
 
-        // Load image with Glide
+
         if (hotel.getImageUrls() != null && !hotel.getImageUrls().isEmpty()) {
-            // Use the first image URL from the list
+
             String firstImageUrl = hotel.getImageUrls().get(0);
             Glide.with(context)
                     .load(firstImageUrl)
@@ -64,14 +64,12 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.HotelViewHol
             holder.hotelImage.setImageResource(R.drawable.default_hotel);
         }
 
-        // ✅ Navigate to HotelDetailsActivity when clicking on a hotel
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, HotelDetailsActivity.class);
             intent.putExtra("hotel", hotel); // Pass the entire hotel object
             context.startActivity(intent);
         });
 
-        // ✅ Set click listener for the Reserve Button
         holder.reserveButton.setOnClickListener(v -> {
             if (reserveButtonClickListener != null) {
                 reserveButtonClickListener.onReserveButtonClick(hotel);

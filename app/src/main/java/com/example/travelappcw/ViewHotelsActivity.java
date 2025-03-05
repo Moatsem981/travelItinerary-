@@ -25,7 +25,6 @@ public class ViewHotelsActivity extends AppCompatActivity implements HotelAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_hotels_activity);
 
-        // Retrieve USER_ID from the intent
         loggedInUsername = getIntent().getStringExtra("USER_ID");
         if (loggedInUsername == null) {
             Log.e("ViewHotelsActivity", "ERROR: USER_ID is NULL!");
@@ -38,7 +37,7 @@ public class ViewHotelsActivity extends AppCompatActivity implements HotelAdapte
         recyclerView = findViewById(R.id.recyclerViewHotels);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        hotelAdapter = new HotelAdapter(this, hotelList, this); // Pass 'this' as the listener
+        hotelAdapter = new HotelAdapter(this, hotelList, this);
         recyclerView.setAdapter(hotelAdapter);
 
         fetchHotelData();
