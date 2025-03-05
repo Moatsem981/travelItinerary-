@@ -16,6 +16,8 @@ public class BookingForm1Activity extends AppCompatActivity {
     private TextInputEditText checkInDate, checkOutDate;
     private EditText guests, specialRequests;
     private Button continueButton;
+    private String loggedInUsername;
+    private Hotel hotel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,18 +31,19 @@ public class BookingForm1Activity extends AppCompatActivity {
         specialRequests = findViewById(R.id.specialRequests);
         continueButton = findViewById(R.id.continueButton);
 
-        // Retrieve USER_ID and hotel object from the intent
-        String userId = getIntent().getStringExtra("USER_ID");
-        Hotel hotel = getIntent().getParcelableExtra("hotel");
+        // Retrieve loggedInUsername and hotel object
+        loggedInUsername = getIntent().getStringExtra("LOGGED_IN_USERNAME");
+        hotel = getIntent().getParcelableExtra("hotel");
 
-        // Debug logs to verify USER_ID and hotel object
-        Log.d("BookingForm1Activity", "USER_ID: " + userId);
+        // Debugging
+        Log.d("BookingForm1Activity", "Logged in username: " + loggedInUsername);
         Log.d("BookingForm1Activity", "Hotel: " + (hotel != null ? hotel.getName() : "null"));
 
+        // Set up date pickers
         checkInDate.setOnClickListener(v -> showDatePicker(checkInDate));
-
         checkOutDate.setOnClickListener(v -> showDatePicker(checkOutDate));
 
+        // Continue button click listener
         continueButton.setOnClickListener(v -> {
             String checkIn = checkInDate.getText().toString().trim();
             String checkOut = checkOutDate.getText().toString().trim();
@@ -50,19 +53,16 @@ public class BookingForm1Activity extends AppCompatActivity {
             if (checkIn.isEmpty() || checkOut.isEmpty() || numGuests.isEmpty()) {
                 Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
             } else {
-                // Proceed to the next form
                 Intent intent = new Intent(BookingForm1Activity.this, BookingForm2Activity.class);
                 intent.putExtra("checkIn", checkIn);
                 intent.putExtra("checkOut", checkOut);
                 intent.putExtra("guests", numGuests);
                 intent.putExtra("specialRequests", requests);
-                intent.putExtra("hotel", hotel); // Pass the hotel object
-                intent.putExtra("USER_ID", userId); // Pass the USER_ID
+                intent.putExtra("hotel", hotel);
+                intent.putExtra("LOGGED_IN_USERNAME", loggedInUsername);
                 startActivity(intent);
             }
         });
-        Log.d("BookingForm1Activity", "USER_ID: " + userId);
-        Log.d("BookingForm1Activity", "Hotel: " + (hotel != null ? hotel.getName() : "null"));
     }
 
     private void showDatePicker(TextInputEditText editText) {

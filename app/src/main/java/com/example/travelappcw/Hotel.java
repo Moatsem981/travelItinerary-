@@ -27,7 +27,6 @@ public class Hotel implements Parcelable {
         this.imageUrls = imageUrls;
     }
 
-    // Parcelable implementation
     protected Hotel(Parcel in) {
         name = in.readString();
         location = in.readString();
