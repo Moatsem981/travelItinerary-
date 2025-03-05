@@ -49,6 +49,7 @@ dependencies {
     // Firebase Firestore & Core SDK (Manually Added)
     implementation("com.google.firebase:firebase-firestore:25.1.1")
     implementation("com.google.firebase:firebase-core:21.1.0")
+    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
 
     // Firebase Database (Manually Added)
     implementation("com.google.firebase:firebase-database-ktx:20.3.1")

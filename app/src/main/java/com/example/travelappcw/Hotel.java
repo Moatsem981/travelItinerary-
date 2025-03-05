@@ -14,7 +14,7 @@ public class Hotel implements Parcelable {
     private List<String> imageUrls;
 
     public Hotel() {
-        // Default constructor required for Firestore
+        // Default constructor required for Firebase Firestore
     }
 
     public Hotel(String name, String location, String price, String ratings, String description, List<String> amenities, List<String> imageUrls) {
@@ -27,6 +27,7 @@ public class Hotel implements Parcelable {
         this.imageUrls = imageUrls;
     }
 
+    // Parcelable implementation
     protected Hotel(Parcel in) {
         name = in.readString();
         location = in.readString();
