@@ -5,20 +5,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +31,14 @@ public class ItineraryFragment extends Fragment {
     private FirebaseFirestore db;
     private CollectionReference itineraryRef;
     private String loggedInUsername;
+    private ExtendedFloatingActionButton fabAddItinerary;
+    private View formContainer;
 
     public ItineraryFragment() {}
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_itinerary, container, false);
 
         if (getArguments() != null) {
@@ -56,35 +56,39 @@ public class ItineraryFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         itineraryRef = db.collection("Users").document(loggedInUsername).collection("itineraries");
 
+        // Bind UI elements
         inputDay = view.findViewById(R.id.inputDay);
         inputTime = view.findViewById(R.id.inputTime);
         inputActivity = view.findViewById(R.id.inputActivity);
         addButton = view.findViewById(R.id.addButton);
         recyclerView = view.findViewById(R.id.recyclerViewItinerary);
+        formContainer = view.findViewById(R.id.formContainer);
+        fabAddItinerary = view.findViewById(R.id.fabAddItinerary);
 
-        if (inputDay == null) Log.e("ItineraryFragment", "inputDay is null! Check XML ID.");
-        if (inputTime == null) Log.e("ItineraryFragment", "inputTime is null! Check XML ID.");
-        if (inputActivity == null) Log.e("ItineraryFragment", "inputActivity is null! Check XML ID.");
-        if (addButton == null) Log.e("ItineraryFragment", "addButton is null! Check XML ID.");
-        if (recyclerView == null) Log.e("ItineraryFragment", "RecyclerView is null! Check XML ID.");
+        // Setup RecyclerView
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new ItineraryAdapter(itineraryList, itineraryRef, getContext());
+        recyclerView.setAdapter(adapter);
 
-        if (recyclerView != null) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            adapter = new ItineraryAdapter(itineraryList, itineraryRef, getContext());
-            recyclerView.setAdapter(adapter);
-        }
-
+        // Load Itineraries from Firestore
         loadItineraryRealTime();
 
-        if (addButton != null) {
-            addButton.setOnClickListener(v -> addItinerary());
-        } else {
-            Log.e("ItineraryFragment", "addButton is null! Check XML.");
-        }
+        // Handle FAB click to toggle form visibility
+        fabAddItinerary.setOnClickListener(v -> {
+            if (formContainer.getVisibility() == View.GONE) {
+                formContainer.setVisibility(View.VISIBLE);
+                fabAddItinerary.setText("Close Form");
+            } else {
+                formContainer.setVisibility(View.GONE);
+                fabAddItinerary.setText("Add Itinerary");
+            }
+        });
+
+        // Handle adding new itinerary
+        addButton.setOnClickListener(v -> addItinerary());
 
         return view;
     }
-
 
     private void addItinerary() {
         String day = inputDay.getText().toString().trim();
@@ -103,6 +107,8 @@ public class ItineraryFragment extends Fragment {
                     item.setId(documentReference.getId());
                     Log.d("FirestoreDebug", "Itinerary added: " + documentReference.getId());
                     clearFields();
+                    formContainer.setVisibility(View.GONE);
+                    fabAddItinerary.setText("Add Itinerary");
                     Toast.makeText(getContext(), "Itinerary added successfully", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
@@ -111,28 +117,32 @@ public class ItineraryFragment extends Fragment {
                 });
     }
 
-
     private void loadItineraryRealTime() {
         itineraryRef.addSnapshotListener((queryDocumentSnapshots, error) -> {
             if (error != null) {
                 Log.e("FirestoreDebug", "Failed to load itineraries", error);
-                Toast.makeText(getContext(), "Failed to load itineraries", Toast.LENGTH_SHORT).show();
+                if (getContext() != null) {
+                    Toast.makeText(getContext(), "Failed to load itineraries", Toast.LENGTH_SHORT).show();
+                }
                 return;
             }
 
             itineraryList.clear();
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                ItineraryItem item = document.toObject(ItineraryItem.class);
-                item.setId(document.getId()); // Store Firestore document ID
-                itineraryList.add(item);
+            if (queryDocumentSnapshots != null) {
+                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                    ItineraryItem item = document.toObject(ItineraryItem.class);
+                    item.setId(document.getId());
+                    itineraryList.add(item);
+                }
             }
 
-            requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
+            if (isAdded() && getActivity() != null) {
+                requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
+            }
 
             Log.d("FirestoreDebug", "RecyclerView updated with " + itineraryList.size() + " items");
         });
     }
-
 
     private void clearFields() {
         inputDay.setText("");

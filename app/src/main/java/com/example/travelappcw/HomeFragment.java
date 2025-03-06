@@ -52,6 +52,21 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+        view.findViewById(R.id.viewFlightsCard).setOnClickListener(v -> {
+            Log.d("NavigationDebug", "Navigating to FlightTickets Activity");
+
+            if (loggedInUsername != null) {
+                Intent intent = new Intent(getActivity(), FlightTickets.class);
+                intent.putExtra("USER_ID", loggedInUsername); // Pass the USER_ID if needed
+                startActivity(intent);
+            } else {
+                Log.e("HomeFragment", "ERROR: USER_ID is NULL!");
+                Toast.makeText(getActivity(), "Error: User not logged in", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         return view;
     }
 }

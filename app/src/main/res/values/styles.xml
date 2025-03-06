@@ -1,0 +1,12 @@
+<resources>
+    <!-- Custom Spinner Style -->
+    <style name="CustomSpinnerStyle" parent="Widget.AppCompat.Spinner">
+        <item name="android:textColor">@color/navy_blue</item>
+        <item name="android:popupTheme">@style/CustomSpinnerPopupTheme</item>
+    </style>
+
+    <!-- Custom Spinner Dropdown Theme -->
+    <style name="CustomSpinnerPopupTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textColor">@color/navy_blue</item>
+    </style>
+</resources>

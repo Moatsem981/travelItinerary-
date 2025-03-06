@@ -3,93 +3,144 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/navy_blue">
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/checkInDateLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Check-in Date"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/checkInDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:clickable="true"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/checkOutDateLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Check-out Date"
-        app:layout_constraintTop_toBottomOf="@id/checkInDateLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/checkOutDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:clickable="true"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/guestsLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Number of Guests"
-        app:layout_constraintTop_toBottomOf="@id/checkOutDateLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/guests"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Special Requests -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/specialRequestsLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Special Requests"
-        app:layout_constraintTop_toBottomOf="@id/guestsLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/specialRequests"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:minLines="3"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Continue Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/continueButton"
+    <!-- Page Title -->
+    <TextView
+        android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Continue"
-        app:cornerRadius="8dp"
-        app:backgroundTint="@color/blue"
-        android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/specialRequestsLayout"
+        android:text="Hotel Booking"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/light_gray"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"/>
+        android:paddingBottom="16dp"/>
+
+    <!-- Form Container -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/light_gray"
+        app:layout_constraintTop_toBottomOf="@id/titleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <!-- Check-in Date -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/checkInDateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Check-in Date"
+                android:textColorHint="@color/navy_blue"
+                android:layout_marginBottom="12dp"
+                app:hintTextColor="@color/whitish_navy_1"
+                app:boxStrokeColor="@color/navy_blue"
+                app:boxStrokeWidth="1dp"
+                app:boxBackgroundMode="outline">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/checkInDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:textColor="@color/navy_blue"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Check-out Date -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/checkOutDateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Check-out Date"
+                android:textColorHint="@color/navy_blue"
+                android:layout_marginBottom="12dp"
+                app:hintTextColor="@color/whitish_navy_1"
+                app:boxStrokeColor="@color/navy_blue"
+                app:boxStrokeWidth="1dp"
+                app:boxBackgroundMode="outline">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/checkOutDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:textColor="@color/navy_blue"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Number of Guests -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/guestsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Number of Guests"
+                android:textColorHint="@color/navy_blue"
+                android:layout_marginBottom="12dp"
+                app:hintTextColor="@color/whitish_navy_1"
+                app:boxStrokeColor="@color/navy_blue"
+                app:boxStrokeWidth="1dp"
+                app:boxBackgroundMode="outline">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/guests"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textColor="@color/navy_blue"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Special Requests -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/specialRequestsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/navy_blue"
+                android:hint="Special Requests"
+                android:layout_marginBottom="16dp"
+                app:hintTextColor="@color/navy_blue"
+                app:boxStrokeColor="@color/navy_blue"
+                app:boxStrokeWidth="1dp"
+                app:boxBackgroundMode="outline">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/specialRequests"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:textColor="@color/navy_blue"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Continue Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/continueButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Continue"
+                app:cornerRadius="12dp"
+                app:backgroundTint="@android:color/black"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="8dp"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="1dp"
+                android:elevation="4dp"/>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

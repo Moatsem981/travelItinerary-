@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -20,6 +21,7 @@ public class LoginSignUpPage extends AppCompatActivity {
     private EditText usernameInput, passwordInput;
     private Button signInButton, signUpButton;
     private TextView forgotPassword;
+    private FirebaseAuth auth;
     private FirebaseFirestore db;
 
     @Override
@@ -27,7 +29,8 @@ public class LoginSignUpPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_signup_page);
 
-        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance(); // Firebase Authentication instance
+        db = FirebaseFirestore.getInstance(); // Firestore database instance
 
         usernameInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
@@ -54,21 +57,29 @@ public class LoginSignUpPage extends AppCompatActivity {
             return;
         }
 
+        // Fetch the user's email from Firestore using the username
         db.collection("Users").document(username)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        String storedPassword = documentSnapshot.getString("password");
-                        if (storedPassword != null && storedPassword.equals(password)) {
-                            Toast.makeText(LoginSignUpPage.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        String email = documentSnapshot.getString("email"); // Retrieve email
 
-                            // Pass User ID to the AppMainPage
-                            Intent intent = new Intent(LoginSignUpPage.this, AppMainPage.class);
-                            intent.putExtra("USER_ID", username);
-                            startActivity(intent);
-                            finish();
+                        if (email != null) {
+                            // Authenticate with Firebase Authentication
+                            auth.signInWithEmailAndPassword(email, password)
+                                    .addOnSuccessListener(authResult -> {
+                                        Toast.makeText(LoginSignUpPage.this, "Login Successful", Toast.LENGTH_SHORT).show();
+
+                                        // Redirect to AppMainPage
+                                        Intent intent = new Intent(LoginSignUpPage.this, AppMainPage.class);
+                                        intent.putExtra("USER_ID", username);
+                                        startActivity(intent);
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e ->
+                                            Toast.makeText(LoginSignUpPage.this, "Login failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                         } else {
-                            Toast.makeText(LoginSignUpPage.this, "Incorrect password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginSignUpPage.this, "No email found for this username", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(LoginSignUpPage.this, "User not found", Toast.LENGTH_SHORT).show();
@@ -100,9 +111,11 @@ public class LoginSignUpPage extends AppCompatActivity {
                             String email = documentSnapshot.getString("email");
 
                             if (email != null) {
-                                FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-                                        .addOnSuccessListener(aVoid -> Toast.makeText(LoginSignUpPage.this, "Password reset email sent!", Toast.LENGTH_LONG).show())
-                                        .addOnFailureListener(e -> Toast.makeText(LoginSignUpPage.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                                auth.sendPasswordResetEmail(email)
+                                        .addOnSuccessListener(aVoid ->
+                                                Toast.makeText(LoginSignUpPage.this, "Password reset email sent!", Toast.LENGTH_LONG).show())
+                                        .addOnFailureListener(e ->
+                                                Toast.makeText(LoginSignUpPage.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                             } else {
                                 Toast.makeText(LoginSignUpPage.this, "No email found for this username", Toast.LENGTH_SHORT).show();
                             }

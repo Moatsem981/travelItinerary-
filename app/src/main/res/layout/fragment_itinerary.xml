@@ -6,82 +6,143 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ItineraryFragment"
+    android:background="@color/navy_blue"
     android:padding="16dp">
 
-    <!-- Input Fields for Itinerary -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/dayInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Day"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputDay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:focusable="true"
-            android:clickable="true"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/timeInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Time"
-        app:layout_constraintTop_toBottomOf="@id/dayInputLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:focusable="true"
-            android:clickable="true"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activityInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Activity"
-        app:layout_constraintTop_toBottomOf="@id/timeInputLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputActivity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Add Itinerary Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/addButton"
+    <!-- Page Title -->
+    <TextView
+        android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Event"
-        app:cornerRadius="8dp"
-        app:backgroundTint="@color/blue"
-        android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/activityInputLayout"
+        android:text="Itinerary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/light_gray"
+        android:letterSpacing="0.05"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        android:paddingBottom="16dp"/>
+
+    <!-- Floating Action Button placed right under the title -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabAddItinerary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Itinerary"
+        android:icon="@drawable/ic_add"
+        app:backgroundTint="@color/light_gray"
+        android:textColor="@android:color/black"
+        app:iconTint="@android:color/black"
+        android:elevation="6dp"
+        app:layout_constraintTop_toBottomOf="@id/titleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <!-- Form Container (Initially Hidden) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/formContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/light_gray"
+        android:padding="20dp"
+        app:layout_constraintTop_toBottomOf="@id/fabAddItinerary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <!-- Day Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/dayInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Day"
+                android:textColorHint="@color/navy_blue"
+                app:hintTextColor="@color/whitish_navy_1"
+                app:boxStrokeColor="@color/navy_blue"
+                app:boxStrokeWidth="1dp"
+                app:boxBackgroundMode="outline">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@color/navy_blue"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Time Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/timeInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Time"
+                android:textColorHint="@color/navy_blue"
+                app:hintTextColor="@color/whitish_navy_1"
+                app:boxStrokeColor="@color/navy_blue"
+                app:boxStrokeWidth="1dp"
+                app:boxBackgroundMode="outline"
+                android:layout_marginTop="12dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@color/navy_blue"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Activity Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/activityInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Activity"
+                android:textColorHint="@color/navy_blue"
+                app:hintTextColor="@color/whitish_navy_1"
+                app:boxStrokeColor="@color/navy_blue"
+                app:boxStrokeWidth="1dp"
+                app:boxBackgroundMode="outline"
+                android:layout_marginTop="12dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@color/navy_blue"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Add Itinerary Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Event"
+                app:cornerRadius="12dp"
+                app:backgroundTint="@android:color/black"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="16dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <!-- RecyclerView for Itinerary List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewItinerary"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/addButton"
+        app:layout_constraintTop_toBottomOf="@id/formContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="16dp"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

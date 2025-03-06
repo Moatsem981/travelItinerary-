@@ -1,90 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:strokeColor="@color/gray"
-    app:strokeWidth="1dp">
+    android:layout_margin="6dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="3dp"
+    android:backgroundTint="@color/light_gray">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="12dp">
 
-        <!-- Day -->
-        <TextView
-            android:id="@+id/textViewDay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Day X"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/white"/>
-
-        <!-- Time -->
-        <TextView
-            android:id="@+id/textViewTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Time: 10:00 AM"
-            android:textSize="16sp"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/white"/>
-
-        <!-- Activity -->
-        <TextView
-            android:id="@+id/textViewActivity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Activity: Airport Arrival"
-            android:textSize="16sp"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/white"/>
-
-        <!-- Edit and Delete Buttons -->
+        <!-- Day & Time Row (Fixed) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:weightSum="2">
+            android:weightSum="1">
 
-            <!-- Edit Button -->
-            <com.google.android.material.button.MaterialButton
+            <TextView
+                android:id="@+id/textViewDay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="Day"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/navy_blue"/>
+
+            <TextView
+                android:id="@+id/textViewTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="Time"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/navy_blue"
+                android:gravity="end"/>
+        </LinearLayout>
+
+        <!-- Activity -->
+        <TextView
+            android:id="@+id/textViewActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Activity"
+            android:textSize="14sp"
+            android:textColor="@color/navy_blue"
+            android:layout_marginTop="6dp"
+            android:maxLines="2"
+            android:ellipsize="end"/>
+
+        <!-- Edit and Delete Buttons (Fixed alignment) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="4dp">
+
+            <Button
                 android:id="@+id/btnEdit"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Edit"
-                android:textColor="@color/white"
-                app:icon="@drawable/it_edit"
-                app:iconGravity="start"
-                app:iconTint="@color/white"
-                app:backgroundTint="@color/blue"
-                app:cornerRadius="8dp"
-                android:layout_marginEnd="4dp"/>
+                android:textSize="12sp"
+                android:backgroundTint="@color/navy_blue"
+                android:textColor="@android:color/white"
+                android:padding="6dp"
+                android:elevation="1dp"
+                android:layout_marginEnd="6dp"/>
 
-            <!-- Delete Button -->
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btnDelete"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Delete"
-                android:textColor="@color/white"
-                app:icon="@drawable/it_delete"
-                app:iconGravity="start"
-                app:iconTint="@color/white"
-                app:backgroundTint="@color/red"
-                app:cornerRadius="8dp"
-                android:layout_marginStart="4dp"/>
+                android:textSize="12sp"
+                android:backgroundTint="@color/navy_blue"
+                android:textColor="@android:color/white"
+                android:padding="6dp"
+                android:elevation="1dp"/>
         </LinearLayout>
 
     </LinearLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>

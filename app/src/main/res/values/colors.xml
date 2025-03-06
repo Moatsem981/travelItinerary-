@@ -16,4 +16,41 @@
     <color name="teal">#20C997</color>
     <color name="background_gray">#F2F2F2</color>
     <color name="dialog_background">#FFF3E0</color>
+    <color name="navy_blue">#001F3F</color>
+    <color name="off_white">#FAFAFA</color>
+    <color name="pure_white">#FFFFFF</color>
+    <color name="cultured">#F5F5F5</color>
+    <color name="ghost_white">#F8F8FF</color>
+    <color name="snow">#FFFAFA</color>
+    <color name="ivory">#FFFFF0</color>
+    <color name="floral_white">#FFFAF0</color>
+    <color name="seashell">#FFF5EE</color>
+    <color name="lavender_blush">#FFF0F5</color>
+    <color name="alice_blue">#F0F8FF</color>
+    <color name="honeydew">#F0FFF0</color>
+    <color name="mint_cream">#F5FFFA</color>
+    <color name="azure">#F0FFFF</color>
+    <color name="old_lace">#FDF5E6</color>
+    <color name="papaya_whip">#FFEFD5</color>
+    <color name="antique_white">#FAEBD7</color>
+    <color name="linen">#FAF0E6</color>
+    <color name="whisper">#EAEAEA</color>
+    <color name="isabelline">#F4F0EC</color>
+    <color name="baby_powder">#FEFEFA</color>
+    <color name="brighter_navy_blue">#404080</color>
+    <color name="bright_navy_blue_2">#5555DD</color>
+    <color name="bright_navy_blue_4">#4444CC</color>
+    <color name="whitish_navy_1">#D6E4FF</color>
+    <color name="navy_bluish_gray">#D8E3E7</color>
+    <color name="navy_bluish_gray_1">#D8E3E7</color>
+    <color name="navy_bluish_gray_2">#D1D9E6</color>
+    <color name="navy_bluish_gray_3">#CAD3DC</color>
+    <color name="navy_bluish_gray_4">#C4D4E0</color>
+    <color name="navy_bluish_gray_5">#B8C9D9</color>
+    <color name="navy_bluish_gray_6">#AEC6CF</color>
+    <color name="navy_bluish_gray_7">#9FB8C7</color>
+    <color name="navy_bluish_gray_8">#8FAFBF</color>
+
+
+
 </resources>

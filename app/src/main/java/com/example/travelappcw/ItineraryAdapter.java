@@ -11,13 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.core.content.ContextCompat;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-
 import java.util.List;
 
 public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.ViewHolder> {
@@ -43,10 +40,9 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ItineraryItem item = itineraryList.get(position);
-        holder.dayTextView.setText(item.getDay());
-        holder.timeTextView.setText(item.getTime());
-        holder.activityTextView.setText(item.getActivity());
-
+        holder.textViewDay.setText(item.getDay()); // Bind Day
+        holder.textViewTime.setText(item.getTime()); // Bind Time
+        holder.textViewActivity.setText(item.getActivity()); // Bind Activity
 
         holder.editButton.setOnClickListener(v -> editItinerary(item, position));
 
@@ -56,13 +52,8 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
                     .addOnSuccessListener(aVoid -> {
                         if (position >= 0 && position < itineraryList.size()) {
                             itineraryList.remove(position);
-
-                            if (context instanceof android.app.Activity) {
-                                ((android.app.Activity) context).runOnUiThread(() -> {
-                                    notifyItemRemoved(position);
-                                    Toast.makeText(context, "Itinerary deleted", Toast.LENGTH_SHORT).show();
-                                });
-                            }
+                            notifyItemRemoved(position);
+                            Toast.makeText(context, "Itinerary deleted", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(e -> {
@@ -72,12 +63,10 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
         });
     }
 
-
     private void editItinerary(ItineraryItem item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_edit_itinerary, null);
         builder.setView(view);
-
 
         view.setBackgroundColor(ContextCompat.getColor(context, R.color.dialog_background));
 
@@ -123,14 +112,14 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView dayTextView, timeTextView, activityTextView;
+        TextView textViewDay, textViewTime, textViewActivity; // Updated IDs
         Button editButton, deleteButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            dayTextView = itemView.findViewById(R.id.textViewDay);
-            timeTextView = itemView.findViewById(R.id.textViewTime);
-            activityTextView = itemView.findViewById(R.id.textViewActivity);
+            textViewDay = itemView.findViewById(R.id.textViewDay); // Updated ID
+            textViewTime = itemView.findViewById(R.id.textViewTime); // Updated ID
+            textViewActivity = itemView.findViewById(R.id.textViewActivity); // Updated ID
             editButton = itemView.findViewById(R.id.btnEdit);
             deleteButton = itemView.findViewById(R.id.btnDelete);
         }
