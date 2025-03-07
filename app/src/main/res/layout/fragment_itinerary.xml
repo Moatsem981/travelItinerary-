@@ -87,21 +87,19 @@
                 android:id="@+id/timeInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Time"
-                android:textColorHint="@color/navy_blue"
-                app:hintTextColor="@color/whitish_navy_1"
-                app:boxStrokeColor="@color/navy_blue"
-                app:boxStrokeWidth="1dp"
+                android:hint="Select Time"
                 app:boxBackgroundMode="outline"
-                android:layout_marginTop="12dp">
+                app:boxStrokeColor="@color/navy_blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:focusable="false"
+                    android:clickable="true"
                     android:textColor="@color/navy_blue"/>
             </com.google.android.material.textfield.TextInputLayout>
+
 
             <!-- Activity Input -->
             <com.google.android.material.textfield.TextInputLayout

@@ -1,12 +1,13 @@
 package com.example.travelappcw;
 
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ItineraryFragment extends Fragment {
 
@@ -73,6 +75,9 @@ public class ItineraryFragment extends Fragment {
         // Load Itineraries from Firestore
         loadItineraryRealTime();
 
+        // Show Time Picker when clicking on inputTime
+        inputTime.setOnClickListener(v -> showTimePicker());
+
         // Handle FAB click to toggle form visibility
         fabAddItinerary.setOnClickListener(v -> {
             if (formContainer.getVisibility() == View.GONE) {
@@ -88,6 +93,15 @@ public class ItineraryFragment extends Fragment {
         addButton.setOnClickListener(v -> addItinerary());
 
         return view;
+    }
+
+    private void showTimePicker() {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
+                (view, hourOfDay, minute) -> {
+                    String formattedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+                    inputTime.setText(formattedTime);
+                }, 12, 0, true); // Default time: 12:00 (24-hour format)
+        timePickerDialog.show();
     }
 
     private void addItinerary() {
