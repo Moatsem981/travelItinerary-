@@ -10,21 +10,20 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class FlightBookingForm extends AppCompatActivity {
 
-    private TextInputEditText fullName, phoneNumber, address, departureDate, passengers, specialRequests;
+    private TextInputEditText fullName, phoneNumber, address, passengers, specialRequests;
     private Button continueButton;
     private String loggedInUsername;
-    private String airline, flightNumber, departure, arrival, price;
+    private String airline, flightNumber, departure, arrival, price, departureDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flight_booking_form);
 
-        // Initialize views
+        // Initialize views (removed departureDate)
         fullName = findViewById(R.id.fullName);
         phoneNumber = findViewById(R.id.phoneNumber);
         address = findViewById(R.id.address);
-        departureDate = findViewById(R.id.departureDate);
         passengers = findViewById(R.id.passengers);
         specialRequests = findViewById(R.id.specialRequests);
         continueButton = findViewById(R.id.continueButton);
@@ -36,6 +35,7 @@ public class FlightBookingForm extends AppCompatActivity {
         departure = getIntent().getStringExtra("departure");
         arrival = getIntent().getStringExtra("arrival");
         price = getIntent().getStringExtra("price");
+        departureDate = getIntent().getStringExtra("departureDate"); // ✅ Retrieve but not display
 
         if (loggedInUsername == null) {
             Log.e("FlightBookingForm", "ERROR: USER_ID is NULL!");
@@ -49,11 +49,10 @@ public class FlightBookingForm extends AppCompatActivity {
             String name = fullName.getText().toString().trim();
             String phone = phoneNumber.getText().toString().trim();
             String userAddress = address.getText().toString().trim();
-            String date = departureDate.getText().toString().trim();
             String numPassengers = passengers.getText().toString().trim();
             String requests = specialRequests.getText().toString().trim();
 
-            if (name.isEmpty() || phone.isEmpty() || userAddress.isEmpty() || date.isEmpty() || numPassengers.isEmpty()) {
+            if (name.isEmpty() || phone.isEmpty() || userAddress.isEmpty() || numPassengers.isEmpty()) {
                 Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
             } else {
                 // Pass booking details to the payment screen
@@ -62,7 +61,7 @@ public class FlightBookingForm extends AppCompatActivity {
                 intent.putExtra("fullName", name);
                 intent.putExtra("phoneNumber", phone);
                 intent.putExtra("address", userAddress);
-                intent.putExtra("departureDate", date);
+                intent.putExtra("departureDate", departureDate);
                 intent.putExtra("passengers", numPassengers);
                 intent.putExtra("specialRequests", requests);
                 intent.putExtra("airline", airline);
