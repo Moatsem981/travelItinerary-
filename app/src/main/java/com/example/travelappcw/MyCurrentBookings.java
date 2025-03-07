@@ -46,8 +46,8 @@ public class MyCurrentBookings extends AppCompatActivity {
         hotelRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         flightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize adapters
-        hotelAdapter = new HotelAdapter(this, hotelBookingsList, hotel -> {});
+        // Initialize adapters (🔥 Updated HotelAdapter to remove Reserve button)
+        hotelAdapter = new HotelAdapter(this, hotelBookingsList, null, true); // Hide Reserve Button
         flightAdapter = new FlightAdapter(flightBookingsList, loggedInUsername);
 
         hotelRecyclerView.setAdapter(hotelAdapter);
@@ -63,7 +63,15 @@ public class MyCurrentBookings extends AppCompatActivity {
         bookingsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
             hotelBookingsList.clear();
             for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                Hotel hotel = document.toObject(Hotel.class);
+                String name = document.getString("hotel.name");
+                String location = document.getString("hotel.location");
+                String price = document.getString("hotel.price");
+                String ratings = document.getString("hotel.ratings");
+                String description = document.getString("hotel.description");
+                List<String> amenities = (List<String>) document.get("hotel.amenities");
+                List<String> imageUrls = (List<String>) document.get("hotel.imageUrls");
+
+                Hotel hotel = new Hotel(name, location, price, ratings, description, amenities, imageUrls);
                 hotelBookingsList.add(hotel);
             }
             hotelAdapter.notifyDataSetChanged();

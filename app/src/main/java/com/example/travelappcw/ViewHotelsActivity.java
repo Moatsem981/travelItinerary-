@@ -37,7 +37,8 @@ public class ViewHotelsActivity extends AppCompatActivity implements HotelAdapte
         recyclerView = findViewById(R.id.recyclerViewHotels);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        hotelAdapter = new HotelAdapter(this, hotelList, this);
+        // ✅ Fixed constructor call (added 'false' to show Reserve Button)
+        hotelAdapter = new HotelAdapter(this, hotelList, this, false);
         recyclerView.setAdapter(hotelAdapter);
 
         fetchHotelData();

@@ -20,16 +20,18 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.HotelViewHol
     private Context context;
     private List<Hotel> hotelList;
     private OnReserveButtonClickListener reserveButtonClickListener;
-
+    private boolean hideReserveButton; // Flag to determine if we should hide the reserve button
 
     public interface OnReserveButtonClickListener {
         void onReserveButtonClick(Hotel hotel);
     }
 
-    public HotelAdapter(Context context, List<Hotel> hotelList, OnReserveButtonClickListener listener) {
+    // Constructor with an additional flag to hide the reserve button
+    public HotelAdapter(Context context, List<Hotel> hotelList, OnReserveButtonClickListener listener, boolean hideReserveButton) {
         this.context = context;
         this.hotelList = hotelList;
         this.reserveButtonClickListener = listener;
+        this.hideReserveButton = hideReserveButton; // Determines if the button should be hidden
     }
 
     @NonNull
@@ -43,15 +45,12 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.HotelViewHol
     public void onBindViewHolder(@NonNull HotelViewHolder holder, int position) {
         Hotel hotel = hotelList.get(position);
 
-
         holder.hotelName.setText(hotel.getName() != null ? hotel.getName() : "Hotel Name Not Available");
         holder.hotelLocation.setText(hotel.getLocation() != null ? hotel.getLocation() : "Location Unknown");
         holder.hotelPrice.setText(hotel.getPrice() != null ? "Price: " + hotel.getPrice() : "Price: N/A");
         holder.hotelRatings.setText(hotel.getRatings() != null ? "⭐ " + hotel.getRatings() : "⭐ N/A");
 
-
         if (hotel.getImageUrls() != null && !hotel.getImageUrls().isEmpty()) {
-
             String firstImageUrl = hotel.getImageUrls().get(0);
             Glide.with(context)
                     .load(firstImageUrl)
@@ -66,15 +65,21 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.HotelViewHol
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, HotelDetailsActivity.class);
-            intent.putExtra("hotel", hotel); // Pass the entire hotel object
+            intent.putExtra("hotel", hotel);
             context.startActivity(intent);
         });
 
-        holder.reserveButton.setOnClickListener(v -> {
-            if (reserveButtonClickListener != null) {
-                reserveButtonClickListener.onReserveButtonClick(hotel);
-            }
-        });
+        // Hide reserve button if hideReserveButton is true (for MyCurrentBookings)
+        if (hideReserveButton) {
+            holder.reserveButton.setVisibility(View.GONE);
+        } else {
+            holder.reserveButton.setVisibility(View.VISIBLE);
+            holder.reserveButton.setOnClickListener(v -> {
+                if (reserveButtonClickListener != null) {
+                    reserveButtonClickListener.onReserveButtonClick(hotel);
+                }
+            });
+        }
     }
 
     @Override
@@ -85,7 +90,7 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.HotelViewHol
     public static class HotelViewHolder extends RecyclerView.ViewHolder {
         TextView hotelName, hotelLocation, hotelPrice, hotelRatings;
         ImageView hotelImage;
-        Button reserveButton; // Reserve Button
+        Button reserveButton;
 
         public HotelViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,7 +99,7 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.HotelViewHol
             hotelPrice = itemView.findViewById(R.id.hotelPrice);
             hotelRatings = itemView.findViewById(R.id.hotelRatings);
             hotelImage = itemView.findViewById(R.id.hotelImage);
-            reserveButton = itemView.findViewById(R.id.reserveButton); // Initialize Reserve Button
+            reserveButton = itemView.findViewById(R.id.reserveButton);
         }
     }
 }
