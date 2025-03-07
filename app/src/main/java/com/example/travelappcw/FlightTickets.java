@@ -1,11 +1,13 @@
 package com.example.travelappcw;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,19 +30,23 @@ public class FlightTickets extends AppCompatActivity {
     private List<FlightModel> flightList = new ArrayList<>();
     private FirebaseFirestore db;
     private Spinner filterSpinner;
-    private String userId; // Add this field to store the USER_ID
+    private String loggedInUsername; // Ensure consistency with HotelDetailsActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flight_tickets);
 
-        // Retrieve the USER_ID from the Intent
-        userId = getIntent().getStringExtra("USER_ID");
-        if (userId == null) {
+        // Retrieve the USER_ID (logged-in username) from the Intent
+        loggedInUsername = getIntent().getStringExtra("USER_ID");
+
+        if (loggedInUsername == null) {
             Log.e("FlightTickets", "ERROR: USER_ID is NULL!");
+            Toast.makeText(this, "Error: User not logged in", Toast.LENGTH_SHORT).show();
+            finish(); // Close activity if no user ID is found
+            return;
         } else {
-            Log.d("FlightTickets", "USER_ID: " + userId);
+            Log.d("FlightTickets", "USER_ID: " + loggedInUsername);
         }
 
         // Initialize Firebase Firestore
@@ -52,7 +58,7 @@ public class FlightTickets extends AppCompatActivity {
 
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        flightAdapter = new FlightAdapter(flightList, userId); // Pass USER_ID to the adapter
+        flightAdapter = new FlightAdapter(flightList, loggedInUsername); // Pass USER_ID to adapter
         recyclerView.setAdapter(flightAdapter);
 
         // Load flights from Firestore

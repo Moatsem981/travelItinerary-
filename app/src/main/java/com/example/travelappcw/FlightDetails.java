@@ -1,25 +1,85 @@
 package com.example.travelappcw;
 
+import android.content.Intent;
 import android.os.Bundle;
-import androidx.activity.EdgeToEdge;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class FlightDetails extends AppCompatActivity {
+
+    private String loggedInUsername; // Ensuring consistency
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_flight_details);
 
-        // Handle window insets
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+        // Initialize views
+        TextView airlineText = findViewById(R.id.airlineText);
+        TextView flightNumberText = findViewById(R.id.flightNumberText);
+        TextView departureText = findViewById(R.id.departureText);
+        TextView arrivalText = findViewById(R.id.arrivalText);
+        TextView priceText = findViewById(R.id.priceText);
+        TextView durationText = findViewById(R.id.durationText);
+        TextView departureTimeText = findViewById(R.id.departureTimeText);
+        TextView arrivalTimeText = findViewById(R.id.arrivalTimeText);
+        TextView baggageAllowanceText = findViewById(R.id.baggageAllowanceText);
+        TextView flightClassText = findViewById(R.id.flightClassText);
+        TextView layoversText = findViewById(R.id.layoversText);
+        Button bookNowButton = findViewById(R.id.bookNowButton);
+
+        // Retrieve logged-in username (USER_ID)
+        loggedInUsername = getIntent().getStringExtra("USER_ID");
+
+        if (loggedInUsername == null) {
+            Log.e("FlightDetails", "ERROR: USER_ID is NULL!");
+            Toast.makeText(this, "Error: User not logged in", Toast.LENGTH_SHORT).show();
+            finish(); // Close the page if USER_ID is missing
+            return;
+        } else {
+            Log.d("FlightDetails", "USER_ID: " + loggedInUsername);
+        }
+
+        // Get flight data from Intent
+        Intent intent = getIntent();
+        String airline = intent.getStringExtra("airline");
+        String flightNumber = intent.getStringExtra("flightNumber");
+        String departure = intent.getStringExtra("departure");
+        String arrival = intent.getStringExtra("arrival");
+        String price = intent.getStringExtra("price");
+        String duration = intent.getStringExtra("duration");
+        String departureTime = intent.getStringExtra("departureTime");
+        String arrivalTime = intent.getStringExtra("arrivalTime");
+        String baggageAllowance = intent.getStringExtra("baggageAllowance");
+        String flightClass = intent.getStringExtra("flightClass");
+        int layovers = intent.getIntExtra("layovers", 0);
+
+        // Display the flight details
+        airlineText.setText("Airline: " + airline);
+        flightNumberText.setText("Flight Number: " + flightNumber);
+        departureText.setText("Departure: " + departure);
+        arrivalText.setText("Arrival: " + arrival);
+        priceText.setText("Price: " + price);
+        durationText.setText("Duration: " + duration);
+        departureTimeText.setText("Departure Time: " + departureTime);
+        arrivalTimeText.setText("Arrival Time: " + arrivalTime);
+        baggageAllowanceText.setText("Baggage Allowance: " + baggageAllowance);
+        flightClassText.setText("Class: " + flightClass);
+        layoversText.setText("Layovers: " + layovers);
+
+        // Handle "Book Now" button click
+        bookNowButton.setOnClickListener(v -> {
+            Intent bookIntent = new Intent(FlightDetails.this, FlightBookingForm.class);
+            bookIntent.putExtra("USER_ID", loggedInUsername);
+            bookIntent.putExtra("airline", airline);
+            bookIntent.putExtra("flightNumber", flightNumber);
+            bookIntent.putExtra("departure", departure);
+            bookIntent.putExtra("arrival", arrival);
+            bookIntent.putExtra("price", price);
+            startActivity(bookIntent);
         });
     }
 }
