@@ -19,7 +19,7 @@ public class FlightBookingPayment extends AppCompatActivity {
     private Button confirmPaymentButton;
     private ProgressDialog progressDialog;
 
-    private String fullName, phoneNumber, address, departureDate, passengers, specialRequests;
+    private String fullName, phoneNumber, address, passengers, specialRequests;
     private String loggedInUsername, airline, flightNumber, departure, arrival, price;
 
     @Override
@@ -44,7 +44,6 @@ public class FlightBookingPayment extends AppCompatActivity {
         fullName = intent.getStringExtra("fullName");
         phoneNumber = intent.getStringExtra("phoneNumber");
         address = intent.getStringExtra("address");
-        departureDate = intent.getStringExtra("departureDate");
         passengers = intent.getStringExtra("passengers");
         specialRequests = intent.getStringExtra("specialRequests");
         airline = intent.getStringExtra("airline");
@@ -84,10 +83,10 @@ public class FlightBookingPayment extends AppCompatActivity {
             Log.d("FlightBookingPayment", "✅ User logged in as: " + loggedInUsername);
         }
 
-        // Validate required fields
-        if (fullName == null || phoneNumber == null || address == null || departureDate == null ||
-                passengers == null || airline == null || flightNumber == null || departure == null ||
-                arrival == null || price == null) {
+        // Validate required fields (Removed `departureDate`)
+        if (fullName == null || phoneNumber == null || address == null ||
+                passengers == null || airline == null || flightNumber == null ||
+                departure == null || arrival == null || price == null) {
 
             Log.e("FlightBookingPayment", "Error: Missing flight booking information!");
             Toast.makeText(this, "Error: Booking details incomplete!", Toast.LENGTH_LONG).show();
@@ -104,7 +103,6 @@ public class FlightBookingPayment extends AppCompatActivity {
         booking.put("fullName", fullName);
         booking.put("phoneNumber", phoneNumber);
         booking.put("address", address);
-        booking.put("departureDate", departureDate);
         booking.put("passengers", passengers);
         booking.put("specialRequests", specialRequests);
         booking.put("airline", airline);
