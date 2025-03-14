@@ -24,7 +24,7 @@ public class HotelDetailsActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private TextView hotelName, hotelLocation, hotelPrice, hotelRatings, hotelDescription;
     private TextView amenitiesList;
-    private Button reserveButton, viewOnMapButton;  
+    private Button reserveButton, viewOnMapButton;
     private String loggedInUsername;
     private Hotel hotel;
 
