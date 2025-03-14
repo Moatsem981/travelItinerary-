@@ -43,7 +43,7 @@ public class SpeakTranslateFragment extends Fragment {
     private Translator translator;
 
     public SpeakTranslateFragment() {
-        // Required empty public constructor
+
     }
 
     @Override

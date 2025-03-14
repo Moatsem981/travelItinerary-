@@ -12,11 +12,14 @@ public class Hotel implements Parcelable {
     private String description;
     private List<String> amenities;
     private List<String> imageUrls;
+    private double latitude;
+    private double longitude;
 
     public Hotel() {
     }
 
-    public Hotel(String name, String location, String price, String ratings, String description, List<String> amenities, List<String> imageUrls) {
+    public Hotel(String name, String location, String price, String ratings, String description,
+                 List<String> amenities, List<String> imageUrls) {
         this.name = name;
         this.location = location;
         this.price = price;
@@ -24,6 +27,21 @@ public class Hotel implements Parcelable {
         this.description = description;
         this.amenities = amenities;
         this.imageUrls = imageUrls;
+        this.latitude = 0.0;
+        this.longitude = 0.0;
+    }
+
+    public Hotel(String name, String location, String price, String ratings, String description,
+                 List<String> amenities, List<String> imageUrls, double latitude, double longitude) {
+        this.name = name;
+        this.location = location;
+        this.price = price;
+        this.ratings = ratings;
+        this.description = description;
+        this.amenities = amenities;
+        this.imageUrls = imageUrls;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     protected Hotel(Parcel in) {
@@ -34,6 +52,8 @@ public class Hotel implements Parcelable {
         description = in.readString();
         amenities = in.createStringArrayList();
         imageUrls = in.createStringArrayList();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
     }
 
     public static final Creator<Hotel> CREATOR = new Creator<Hotel>() {
@@ -62,8 +82,9 @@ public class Hotel implements Parcelable {
         dest.writeString(description);
         dest.writeStringList(amenities);
         dest.writeStringList(imageUrls);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
     }
-
 
     public String getName() {
         return name;
@@ -91,5 +112,13 @@ public class Hotel implements Parcelable {
 
     public List<String> getImageUrls() {
         return imageUrls;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 }

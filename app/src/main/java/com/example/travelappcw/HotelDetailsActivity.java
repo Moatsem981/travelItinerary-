@@ -24,14 +24,14 @@ public class HotelDetailsActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private TextView hotelName, hotelLocation, hotelPrice, hotelRatings, hotelDescription;
     private TextView amenitiesList;
-    private Button reserveButton;
+    private Button reserveButton, viewOnMapButton;  
     private String loggedInUsername;
+    private Hotel hotel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hotel_details);
-
 
         imageSlider = findViewById(R.id.imageSlider);
         tabLayout = findViewById(R.id.tabLayout);
@@ -42,9 +42,10 @@ public class HotelDetailsActivity extends AppCompatActivity {
         hotelDescription = findViewById(R.id.hotelDescription);
         amenitiesList = findViewById(R.id.amenitiesList);
         reserveButton = findViewById(R.id.reserveButton);
+        viewOnMapButton = findViewById(R.id.viewOnMapButton); // Initialize View Map button
 
         loggedInUsername = getIntent().getStringExtra("USER_ID");
-        Hotel hotel = getIntent().getParcelableExtra("hotel");
+        hotel = getIntent().getParcelableExtra("hotel");
 
         Log.d("HotelDetailsActivity", "USER_ID: " + loggedInUsername);
         Log.d("HotelDetailsActivity", "Hotel: " + (hotel != null ? hotel.getName() : "null"));
@@ -78,6 +79,7 @@ public class HotelDetailsActivity extends AppCompatActivity {
                 amenitiesText.append("• ").append(amenity).append("\n");
             }
             amenitiesList.setText(amenitiesText.toString());
+
             List<String> validImageUrls = new ArrayList<>();
             for (String url : hotel.getImageUrls()) {
                 if (url != null && !url.isEmpty() && !url.equals("https://via.placeholder.com/800x600.png?text=Hotel+Image")) {
@@ -89,9 +91,7 @@ public class HotelDetailsActivity extends AppCompatActivity {
                 ImageSliderAdapter adapter = new ImageSliderAdapter(validImageUrls);
                 imageSlider.setAdapter(adapter);
 
-
-                new TabLayoutMediator(tabLayout, imageSlider, (tab, position) -> {
-                }).attach();
+                new TabLayoutMediator(tabLayout, imageSlider, (tab, position) -> {}).attach();
             } else {
                 imageSlider.setVisibility(View.GONE);
                 tabLayout.setVisibility(View.GONE);
@@ -113,5 +113,30 @@ public class HotelDetailsActivity extends AppCompatActivity {
                 Toast.makeText(this, "Error: Hotel details or user not found", Toast.LENGTH_SHORT).show();
             }
         });
+
+        viewOnMapButton.setOnClickListener(v -> {
+            if (hotel != null) {
+                double lat = hotel.getLatitude();
+                double lng = hotel.getLongitude();
+
+                Log.d("HotelDetailsActivity", "Passing Latitude: " + lat + ", Longitude: " + lng);  // Debugging
+
+                if (lat != 0.0 && lng != 0.0) {
+                    Intent intent = new Intent(HotelDetailsActivity.this, MapActivity.class);
+                    intent.putExtra("HOTEL_NAME", hotel.getName());  // Hotel Name
+                    intent.putExtra("HOTEL_LATITUDE", lat);         // Correctly Passing Latitude
+                    intent.putExtra("HOTEL_LONGITUDE", lng);        // Correctly Passing Longitude
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, "Hotel location not available!", Toast.LENGTH_SHORT).show();
+                    Log.e("HotelDetailsActivity", "Invalid latitude/longitude: " + lat + ", " + lng);
+                }
+            } else {
+                Log.e("HotelDetailsActivity", "Hotel object is null");
+                Toast.makeText(this, "Error: Hotel details not found", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 }

@@ -20,7 +20,7 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.HotelViewHol
     private Context context;
     private List<Hotel> hotelList;
     private OnReserveButtonClickListener reserveButtonClickListener;
-    private boolean hideReserveButton; // Flag to determine if we should hide the reserve button
+    private boolean hideReserveButton;
 
     public interface OnReserveButtonClickListener {
         void onReserveButtonClick(Hotel hotel);

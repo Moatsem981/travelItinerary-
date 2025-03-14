@@ -20,7 +20,7 @@ public class FlightBookingForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flight_booking_form);
 
-        // Initialize views (removed departureDate)
+
         fullName = findViewById(R.id.fullName);
         phoneNumber = findViewById(R.id.phoneNumber);
         address = findViewById(R.id.address);
@@ -28,7 +28,6 @@ public class FlightBookingForm extends AppCompatActivity {
         specialRequests = findViewById(R.id.specialRequests);
         continueButton = findViewById(R.id.continueButton);
 
-        // Retrieve logged-in username and flight details from Intent
         loggedInUsername = getIntent().getStringExtra("USER_ID");
         airline = getIntent().getStringExtra("airline");
         flightNumber = getIntent().getStringExtra("flightNumber");
@@ -44,7 +43,6 @@ public class FlightBookingForm extends AppCompatActivity {
             return;
         }
 
-        // Handle "Proceed to Payment" button click
         continueButton.setOnClickListener(v -> {
             String name = fullName.getText().toString().trim();
             String phone = phoneNumber.getText().toString().trim();
@@ -55,7 +53,7 @@ public class FlightBookingForm extends AppCompatActivity {
             if (name.isEmpty() || phone.isEmpty() || userAddress.isEmpty() || numPassengers.isEmpty()) {
                 Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
             } else {
-                // Pass booking details to the payment screen
+
                 Intent intent = new Intent(FlightBookingForm.this, FlightBookingPayment.class);
                 intent.putExtra("USER_ID", loggedInUsername);
                 intent.putExtra("fullName", name);

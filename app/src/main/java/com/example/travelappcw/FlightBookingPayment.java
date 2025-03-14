@@ -27,19 +27,15 @@ public class FlightBookingPayment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flight_booking_payment);
 
-        // Initialize Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Initialize UI components
         totalCostTextView = findViewById(R.id.totalCostTextView);
         confirmPaymentButton = findViewById(R.id.confirmPaymentButton);
 
-        // Initialize progress dialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Processing payment...");
         progressDialog.setCancelable(false);
 
-        // Retrieve data from the Intent
         Intent intent = getIntent();
         fullName = intent.getStringExtra("fullName");
         phoneNumber = intent.getStringExtra("phoneNumber");
@@ -63,17 +59,14 @@ public class FlightBookingPayment extends AppCompatActivity {
         Log.d("FlightBookingPayment", "Logged in username: " + loggedInUsername);
         Log.d("FlightBookingPayment", "Flight: " + airline + " " + flightNumber);
 
-        // Display the total cost (Price of the selected flight)
         totalCostTextView.setText("Total to Pay: £" + price);
 
-        // Confirm payment button listener
         confirmPaymentButton.setOnClickListener(v -> processPayment());
     }
 
     private void processPayment() {
         progressDialog.show();
 
-        // Ensure correct username is fetched
         if (loggedInUsername == null || loggedInUsername.isEmpty()) {
             Log.e("FlightBookingPayment", "❌ ERROR: No user logged in! USER_ID is NULL.");
             Toast.makeText(this, "Error: User is not logged in!", Toast.LENGTH_LONG).show();
@@ -83,7 +76,6 @@ public class FlightBookingPayment extends AppCompatActivity {
             Log.d("FlightBookingPayment", "✅ User logged in as: " + loggedInUsername);
         }
 
-        // Validate required fields (Removed `departureDate`)
         if (fullName == null || phoneNumber == null || address == null ||
                 passengers == null || airline == null || flightNumber == null ||
                 departure == null || arrival == null || price == null) {
@@ -94,7 +86,6 @@ public class FlightBookingPayment extends AppCompatActivity {
             return;
         }
 
-        // Save booking to Firestore under "Users/{loggedInUsername}/FlightBookings/"
         saveBookingToFirestore();
     }
 
@@ -110,8 +101,7 @@ public class FlightBookingPayment extends AppCompatActivity {
         booking.put("departure", departure);
         booking.put("arrival", arrival);
         booking.put("price", price);
-        booking.put("userId", loggedInUsername); // Store under the logged-in user's ID
-
+        booking.put("userId", loggedInUsername);
         db.collection("Users")
                 .document(loggedInUsername)
                 .collection("FlightBookings")
@@ -121,7 +111,6 @@ public class FlightBookingPayment extends AppCompatActivity {
                     Toast.makeText(this, "Payment Successful!", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
 
-                    // Navigate to confirmation screen
                     Intent intent = new Intent(this, ConfirmationActivity.class);
                     startActivity(intent);
                     finish();

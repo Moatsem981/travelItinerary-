@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class FlightDetails extends AppCompatActivity {
 
-    private String loggedInUsername; // Ensuring consistency
+    private String loggedInUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,19 +31,17 @@ public class FlightDetails extends AppCompatActivity {
         TextView layoversText = findViewById(R.id.layoversText);
         Button bookNowButton = findViewById(R.id.bookNowButton);
 
-        // Retrieve logged-in username (USER_ID)
         loggedInUsername = getIntent().getStringExtra("USER_ID");
 
         if (loggedInUsername == null) {
             Log.e("FlightDetails", "ERROR: USER_ID is NULL!");
             Toast.makeText(this, "Error: User not logged in", Toast.LENGTH_SHORT).show();
-            finish(); // Close the page if USER_ID is missing
+            finish();
             return;
         } else {
             Log.d("FlightDetails", "USER_ID: " + loggedInUsername);
         }
 
-        // Get flight data from Intent
         Intent intent = getIntent();
         String airline = intent.getStringExtra("airline");
         String flightNumber = intent.getStringExtra("flightNumber");
@@ -57,7 +55,6 @@ public class FlightDetails extends AppCompatActivity {
         String flightClass = intent.getStringExtra("flightClass");
         int layovers = intent.getIntExtra("layovers", 0);
 
-        // Display the flight details
         airlineText.setText("Airline: " + airline);
         flightNumberText.setText("Flight Number: " + flightNumber);
         departureText.setText("Departure: " + departure);
@@ -70,7 +67,6 @@ public class FlightDetails extends AppCompatActivity {
         flightClassText.setText("Class: " + flightClass);
         layoversText.setText("Layovers: " + layovers);
 
-        // Handle "Book Now" button click
         bookNowButton.setOnClickListener(v -> {
             Intent bookIntent = new Intent(FlightDetails.this, FlightBookingForm.class);
             bookIntent.putExtra("USER_ID", loggedInUsername);

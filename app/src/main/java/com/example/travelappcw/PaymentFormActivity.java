@@ -20,7 +20,7 @@ public class PaymentFormActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     private String checkIn, checkOut, guests, specialRequests, fullName, userEmail, phoneNumber;
-    private String loggedInUsername;  // 🔥 Now using username like in ItineraryFragment
+    private String loggedInUsername;
     private Hotel hotel;
 
     @Override
@@ -28,19 +28,19 @@ public class PaymentFormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_form);
 
-        // Initialize Firestore
+
         db = FirebaseFirestore.getInstance();
 
-        // Initialize UI components
+
         totalCostTextView = findViewById(R.id.totalCostTextView);
         confirmPaymentButton = findViewById(R.id.confirmPaymentButton);
 
-        // Initialize progress dialog
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Processing payment...");
         progressDialog.setCancelable(false);
 
-        // Retrieve data from the intent
+
         Intent intent = getIntent();
         checkIn = intent.getStringExtra("checkIn");
         checkOut = intent.getStringExtra("checkOut");
@@ -51,19 +51,19 @@ public class PaymentFormActivity extends AppCompatActivity {
         phoneNumber = intent.getStringExtra("phone");
         hotel = intent.getParcelableExtra("hotel");
 
-        // ✅ Get the logged-in username, just like ItineraryFragment does!
+
         loggedInUsername = intent.getStringExtra("USER_ID");
 
         if (loggedInUsername == null || loggedInUsername.isEmpty()) {
             Log.e("PaymentFormActivity", "Error: No logged-in user found!");
             Toast.makeText(this, "Error: User is not logged in!", Toast.LENGTH_LONG).show();
-            finish(); // Close activity if no user is logged in
+            finish();
             return;
         }
 
         Log.d("PaymentFormActivity", "Logged in username: " + loggedInUsername);
 
-        // Set total cost dynamically if available
+
         if (hotel != null) {
             totalCostTextView.setText("Total to Pay: $" + hotel.getPrice());
         } else {
@@ -71,14 +71,14 @@ public class PaymentFormActivity extends AppCompatActivity {
             Toast.makeText(this, "Error: Hotel details missing!", Toast.LENGTH_LONG).show();
         }
 
-        // Confirm payment button listener
+
         confirmPaymentButton.setOnClickListener(v -> processPayment());
     }
 
     private void processPayment() {
         progressDialog.show();
 
-        // Ensure correct username is fetched
+
         if (loggedInUsername == null || loggedInUsername.isEmpty()) {
             Log.e("PaymentFormActivity", "❌ ERROR: No user logged in! USER_ID is NULL.");
             Toast.makeText(this, "Error: User is not logged in!", Toast.LENGTH_LONG).show();
@@ -103,7 +103,7 @@ public class PaymentFormActivity extends AppCompatActivity {
             return;
         }
 
-        // Save booking to Firestore under "Users/{loggedInUsername}/Bookings/"
+
         saveBookingToFirestore();
     }
 
@@ -117,7 +117,7 @@ public class PaymentFormActivity extends AppCompatActivity {
         booking.put("email", userEmail);
         booking.put("phone", phoneNumber);
 
-        // Add hotel details (nested map)
+
         Map<String, Object> hotelMap = new HashMap<>();
         hotelMap.put("name", hotel.getName());
         hotelMap.put("location", hotel.getLocation());

@@ -12,16 +12,14 @@ public class FlightModel {
     private String arrivalTime;
     private String baggageAllowance;
 
-    @PropertyName("class") // Map Firestore field "class" to flightClass
+    @PropertyName("class")
     private String flightClass;
 
     private int layovers;
     private String price;
 
-    // Default constructor (required for Firestore)
     public FlightModel() {}
 
-    // Parameterized constructor (optional, for convenience)
     public FlightModel(String airline, String flightNumber, String departure, String arrival,
                        String duration, String departureTime, String arrivalTime,
                        String baggageAllowance, String flightClass, int layovers, String price) {
@@ -54,7 +52,7 @@ public class FlightModel {
     public int getLayovers() { return layovers; }
     public String getPrice() { return price; }
 
-    // Setters (required for Firestore deserialization)
+    // Setters
     public void setAirline(String airline) { this.airline = airline; }
     public void setFlightNumber(String flightNumber) { this.flightNumber = flightNumber; }
     public void setDeparture(String departure) { this.departure = departure; }
@@ -64,13 +62,13 @@ public class FlightModel {
     public void setArrivalTime(String arrivalTime) { this.arrivalTime = arrivalTime; }
     public void setBaggageAllowance(String baggageAllowance) { this.baggageAllowance = baggageAllowance; }
 
-    @PropertyName("class") // Map Firestore field "class" to flightClass
+    @PropertyName("class")
     public void setFlightClass(String flightClass) { this.flightClass = flightClass; }
 
     public void setLayovers(int layovers) { this.layovers = layovers; }
     public void setPrice(String price) { this.price = price; }
 
-    // Optional: Override toString() for debugging
+
     @Override
     public String toString() {
         return "FlightModel{" +

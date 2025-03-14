@@ -27,7 +27,7 @@ public class MyCurrentBookings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_current_bookings);
 
-        // Retrieve logged-in username
+
         loggedInUsername = getIntent().getStringExtra("USER_ID");
 
         if (loggedInUsername == null) {
@@ -39,21 +39,21 @@ public class MyCurrentBookings extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // Initialize RecyclerViews
+
         hotelRecyclerView = findViewById(R.id.hotelRecyclerView);
         flightRecyclerView = findViewById(R.id.flightRecyclerView);
 
         hotelRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         flightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize adapters (🔥 Updated HotelAdapter to remove Reserve button)
+
         hotelAdapter = new HotelAdapter(this, hotelBookingsList, null, true); // Hide Reserve Button
         flightAdapter = new FlightAdapter(flightBookingsList, loggedInUsername);
 
         hotelRecyclerView.setAdapter(hotelAdapter);
         flightRecyclerView.setAdapter(flightAdapter);
 
-        // Load bookings from Firestore
+
         loadHotelBookings();
         loadFlightBookings();
     }

@@ -37,34 +37,28 @@ public class FlightTickets extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flight_tickets);
 
-        // Retrieve the USER_ID (logged-in username) from the Intent
         loggedInUsername = getIntent().getStringExtra("USER_ID");
 
         if (loggedInUsername == null) {
             Log.e("FlightTickets", "ERROR: USER_ID is NULL!");
             Toast.makeText(this, "Error: User not logged in", Toast.LENGTH_SHORT).show();
-            finish(); // Close activity if no user ID is found
+            finish();
             return;
         } else {
             Log.d("FlightTickets", "USER_ID: " + loggedInUsername);
         }
 
-        // Initialize Firebase Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Initialize Views
         recyclerView = findViewById(R.id.recyclerViewFlights);
         filterSpinner = findViewById(R.id.filterSpinner);
 
-        // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         flightAdapter = new FlightAdapter(flightList, loggedInUsername); // Pass USER_ID to adapter
         recyclerView.setAdapter(flightAdapter);
 
-        // Load flights from Firestore
         loadFlights();
 
-        // Set up filter dropdown
         setupFilter();
     }
 
@@ -89,23 +83,21 @@ public class FlightTickets extends AppCompatActivity {
     }
 
     private void setupFilter() {
-        // Define the filter options
+
         String[] filterOptions = {"All Flights", "Price: Low to High", "Price: High to Low", "Shortest Duration"};
 
-        // Create an ArrayAdapter using the custom layout
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
-                R.layout.custom_spinner_item, // Custom layout for dropdown items
+                R.layout.custom_spinner_item,
                 filterOptions
         );
 
-        // Specify the layout to use when the list of choices appears
+
         adapter.setDropDownViewResource(R.layout.custom_spinner_item);
 
-        // Apply the adapter to the Spinner
         filterSpinner.setAdapter(adapter);
 
-        // Set up the Spinner item selection listener
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -121,24 +113,24 @@ public class FlightTickets extends AppCompatActivity {
         if (flightList.isEmpty()) return;
 
         switch (filterOption) {
-            case 1: // Sort by Price Low to High
+            case 1:
                 flightList.sort((f1, f2) -> {
                     int price1 = Integer.parseInt(f1.getPrice().replace("£", "")); // Remove "£" and convert to int
                     int price2 = Integer.parseInt(f2.getPrice().replace("£", "")); // Remove "£" and convert to int
                     return Integer.compare(price1, price2);
                 });
                 break;
-            case 2: // Sort by Price High to Low
+            case 2:
                 flightList.sort((f1, f2) -> {
                     int price1 = Integer.parseInt(f1.getPrice().replace("£", "")); // Remove "£" and convert to int
                     int price2 = Integer.parseInt(f2.getPrice().replace("£", "")); // Remove "£" and convert to int
                     return Integer.compare(price2, price1);
                 });
                 break;
-            case 3: // Sort by Shortest Duration
+            case 3:
                 flightList.sort((f1, f2) -> f1.getDuration().compareTo(f2.getDuration()));
                 break;
-            default: // Reset to default (no sorting)
+            default:
                 loadFlights();
                 return;
         }

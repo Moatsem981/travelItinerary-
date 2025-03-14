@@ -60,7 +60,14 @@ public class ViewHotelsActivity extends AppCompatActivity implements HotelAdapte
                             List<String> amenities = (List<String>) document.get("amenities");
                             List<String> imageUrls = (List<String>) document.get("imageUrls");
 
-                            Hotel hotel = new Hotel(name, location, price, ratings, description, amenities, imageUrls);
+                            // ✅ Retrieve latitude & longitude properly (set default 0.0 if null)
+                            double latitude = document.contains("latitude") ? document.getDouble("latitude") : 0.0;
+                            double longitude = document.contains("longitude") ? document.getDouble("longitude") : 0.0;
+
+                            // 🔹 Debug log for verification
+                            Log.d("FirestoreData", "Hotel: " + name + " | Lat: " + latitude + " | Lng: " + longitude);
+
+                            Hotel hotel = new Hotel(name, location, price, ratings, description, amenities, imageUrls, latitude, longitude);
                             hotelList.add(hotel);
                         }
                     }
@@ -74,11 +81,10 @@ public class ViewHotelsActivity extends AppCompatActivity implements HotelAdapte
 
     @Override
     public void onReserveButtonClick(Hotel hotel) {
-        // Handle Reserve Button Click
         if (loggedInUsername != null) {
             Intent intent = new Intent(this, HotelDetailsActivity.class);
-            intent.putExtra("hotel", hotel); // Pass the hotel object
-            intent.putExtra("USER_ID", loggedInUsername); // Pass the USER_ID
+            intent.putExtra("hotel", hotel);
+            intent.putExtra("USER_ID", loggedInUsername);
             startActivity(intent);
         } else {
             Log.e("ViewHotelsActivity", "ERROR: USER_ID is NULL!");

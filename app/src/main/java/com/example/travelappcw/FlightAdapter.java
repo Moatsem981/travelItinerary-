@@ -36,12 +36,11 @@ public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightView
         holder.arrivalText.setText(flight.getArrival());
         holder.priceText.setText("£" + flight.getPrice());
 
-        // Set click listener for the "View Details" button
+
         holder.viewDetailsButton.setOnClickListener(v -> {
-            // Create an Intent to open the FlightDetails activity
+
             Intent intent = new Intent(v.getContext(), FlightDetails.class);
 
-            // Pass the flight data to the FlightDetails activity
             intent.putExtra("airline", flight.getAirline());
             intent.putExtra("flightNumber", flight.getFlightNumber());
             intent.putExtra("departure", flight.getDeparture());
@@ -54,10 +53,8 @@ public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightView
             intent.putExtra("flightClass", flight.getFlightClass());
             intent.putExtra("layovers", flight.getLayovers());
 
-            // Pass the USER_ID to the FlightDetails activity
             intent.putExtra("USER_ID", userId);
 
-            // Start the FlightDetails activity
             v.getContext().startActivity(intent);
         });
     }
