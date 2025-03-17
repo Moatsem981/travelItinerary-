@@ -9,7 +9,7 @@
     android:background="@color/navy_blue"
     tools:context=".LoginSignUpPage">
 
-    <!-- Page Title -->
+
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"

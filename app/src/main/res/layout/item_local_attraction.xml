@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="4dp"
-    android:backgroundTint="@color/navy_blue">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp"
+    android:background="@color/light_gray">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,51 +16,43 @@
         android:padding="16dp">
 
         <ImageView
-            android:id="@+id/hotelImage"
+            android:id="@+id/attractionImage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"/>
 
         <TextView
-            android:id="@+id/hotelName"
+            android:id="@+id/attractionName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/navy_blue"
             android:paddingTop="8dp"/>
 
         <TextView
-            android:id="@+id/hotelLocation"
+            android:id="@+id/attractionLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/dark_blue"
             android:paddingTop="4dp"/>
 
         <TextView
-            android:id="@+id/hotelPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/light_gray"
-            android:textSize="14sp"
-            android:paddingTop="4dp"/>
-
-        <TextView
-            android:id="@+id/hotelRatings"
+            android:id="@+id/attractionDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/light_gray"
+            android:textColor="@android:color/darker_gray"
             android:paddingTop="4dp"/>
 
         <Button
-            android:id="@+id/reserveButton"
+            android:id="@+id/viewOnMapButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Reserve"
+            android:text="View on Map"
             android:layout_marginTop="8dp"
-            android:backgroundTint="@color/light_gray"
-            android:textColor="@android:color/black"/>
+            android:backgroundTint="@color/navy_blue"
+            android:textColor="@android:color/white"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -17,13 +17,11 @@ public class HomeFragment extends Fragment {
     private String loggedInUsername;
 
     public HomeFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Bundle args = getArguments();
         if (args != null) {
             loggedInUsername = args.getString("USER_ID");
@@ -38,48 +36,42 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // Handle "View Flights" button click
         view.findViewById(R.id.viewFlightsCard).setOnClickListener(v -> {
             Log.d("NavigationDebug", "Navigating to FlightTickets Activity");
-
-            if (loggedInUsername != null) {
-                Intent intent = new Intent(getActivity(), FlightTickets.class);
-                intent.putExtra("USER_ID", loggedInUsername);
-                startActivity(intent);
-            } else {
-                Log.e("HomeFragment", "ERROR: USER_ID is NULL!");
-                Toast.makeText(getActivity(), "Error: User not logged in", Toast.LENGTH_SHORT).show();
-            }
+            navigateToActivity(FlightTickets.class);
         });
 
-        // Handle "View Hotels" button click
         view.findViewById(R.id.viewHotelsCard).setOnClickListener(v -> {
             Log.d("NavigationDebug", "Navigating to ViewHotelsActivity");
-
-            if (loggedInUsername != null) {
-                Intent intent = new Intent(getActivity(), ViewHotelsActivity.class);
-                intent.putExtra("USER_ID", loggedInUsername);
-                startActivity(intent);
-            } else {
-                Log.e("HomeFragment", "ERROR: USER_ID is NULL!");
-                Toast.makeText(getActivity(), "Error: User not logged in", Toast.LENGTH_SHORT).show();
-            }
+            navigateToActivity(ViewHotelsActivity.class);
         });
 
-        // Handle "My Current Bookings" button click
         view.findViewById(R.id.myCurrentBookingsCard).setOnClickListener(v -> {
             Log.d("NavigationDebug", "Navigating to MyCurrentBookings");
+            navigateToActivity(MyCurrentBookings.class);
+        });
 
-            if (loggedInUsername != null) {
-                Intent intent = new Intent(getActivity(), MyCurrentBookings.class);
-                intent.putExtra("USER_ID", loggedInUsername);
-                startActivity(intent);
-            } else {
-                Log.e("HomeFragment", "ERROR: USER_ID is NULL!");
-                Toast.makeText(getActivity(), "Error: User not logged in", Toast.LENGTH_SHORT).show();
-            }
+        view.findViewById(R.id.viewMyHotelBookingsCard).setOnClickListener(v -> {
+            Log.d("NavigationDebug", "Navigating to MyHotelBookings");
+            navigateToActivity(MyHotelBookings.class);
+        });
+
+        view.findViewById(R.id.viewMyFlightBookingsCard).setOnClickListener(v -> {
+            Log.d("NavigationDebug", "Navigating to MyFlightsBookings");
+            navigateToActivity(MyFlightsBookings.class);
         });
 
         return view;
+    }
+
+    private void navigateToActivity(Class<?> targetActivity) {
+        if (loggedInUsername != null) {
+            Intent intent = new Intent(getActivity(), targetActivity);
+            intent.putExtra("USER_ID", loggedInUsername);
+            startActivity(intent);
+        } else {
+            Log.e("HomeFragment", "ERROR: USER_ID is NULL!");
+            Toast.makeText(getActivity(), "Error: User not logged in", Toast.LENGTH_SHORT).show();
+        }
     }
 }
