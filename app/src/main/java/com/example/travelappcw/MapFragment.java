@@ -49,11 +49,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Attract
             attractionList.clear();
             for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                 Attraction attraction = document.toObject(Attraction.class);
+
+                // Debugging: Log data retrieval
+                System.out.println("Fetched attraction: " + attraction.getName());
+                System.out.println("Fetched image URL: " + attraction.getImageUrl());
+
                 attractionList.add(attraction);
             }
             attractionAdapter = new AttractionAdapter(attractionList, this);
             recyclerView.setAdapter(attractionAdapter);
-        });
+        }).addOnFailureListener(e -> System.err.println("Firestore fetch failed: " + e.getMessage()));
     }
 
     @Override
@@ -69,5 +74,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Attract
         gMap.clear();
         gMap.addMarker(new MarkerOptions().position(location).title(name));
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 }

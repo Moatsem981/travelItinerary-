@@ -29,6 +29,8 @@
             android:layout_height="match_parent"/>
     </androidx.cardview.widget.CardView>
 
+
+
     <!-- Title for Local Attractions -->
     <TextView
         android:id="@+id/attractionsTitle"
