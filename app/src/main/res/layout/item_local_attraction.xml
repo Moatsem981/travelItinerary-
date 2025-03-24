@@ -7,7 +7,7 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="6dp"
-    android:background="@color/light_gray">
+    android:backgroundTint="@color/navy_blue">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/dark_blue"
+            android:textColor="@color/white"
             android:paddingTop="4dp"/>
 
         <TextView
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@android:color/white"
             android:paddingTop="4dp"/>
 
         <Button
@@ -52,7 +52,8 @@
             android:layout_height="wrap_content"
             android:text="View on Map"
             android:layout_marginTop="8dp"
-            android:backgroundTint="@color/navy_blue"
+            android:backgroundTint="@color/black"
             android:textColor="@android:color/white"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
+

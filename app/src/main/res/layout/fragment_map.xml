@@ -5,23 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/navy_blue"
+    android:background="@color/cardview_dark_background"
     android:padding="16dp"
     tools:context=".MapFragment">
 
-    <!-- Map Container -->
+    <!-- Map Container (50% of screen height with rounded corners) -->
     <androidx.cardview.widget.CardView
-        android:id="@+id/mapContainer"
-        android:layout_width="match_parent"
+        android:id="@+id/mapCardView"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="20dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="6dp"
-        android:background="@color/light_gray"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.5">
+        app:layout_constraintHeight_percent="0.4">
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapView"
@@ -29,32 +28,30 @@
             android:layout_height="match_parent"/>
     </androidx.cardview.widget.CardView>
 
-
-
-    <!-- Title for Local Attractions -->
+    <!-- Title for Local Attractions (centered horizontally) -->
     <TextView
         android:id="@+id/attractionsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Local Attractions"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/light_gray"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@id/mapContainer"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/mapCardView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- RecyclerView for Attractions List -->
+    <!-- RecyclerView for Attractions List (50% of screen height) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewAttractions"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:padding="8dp"
-        android:background="@color/light_gray"
-        app:layout_constraintTop_toBottomOf="@id/attractionsTitle"
+        android:layout_width="398dp"
+        android:layout_height="371dp"
+        android:padding="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
+        app:layout_constraintTop_toBottomOf="@id/attractionsTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
