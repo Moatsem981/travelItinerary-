@@ -58,13 +58,12 @@ public class ItineraryFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         itineraryRef = db.collection("Users").document(loggedInUsername).collection("itineraries");
 
-        // Bind UI elements
+        // Binding UI elements
         inputDay = view.findViewById(R.id.inputDay);
         inputTime = view.findViewById(R.id.inputTime);
         inputActivity = view.findViewById(R.id.inputActivity);
         addButton = view.findViewById(R.id.addButton);
-        recyclerView = view.findViewById(R.id.recyclerViewItinerary);
-        formContainer = view.findViewById(R.id.formContainer);
+        recyclerView = view.findViewById(R.id.recyclerViewItinerary);formContainer = view.findViewById(R.id.formContainer);
         fabAddItinerary = view.findViewById(R.id.fabAddItinerary);
 
         // Setup RecyclerView
@@ -72,13 +71,13 @@ public class ItineraryFragment extends Fragment {
         adapter = new ItineraryAdapter(itineraryList, itineraryRef, getContext());
         recyclerView.setAdapter(adapter);
 
-        // Load Itineraries from Firestore
+        // it Loads Itineraries from Firestore
         loadItineraryRealTime();
 
-        // Show Time Picker when clicking on inputTime
+        // this is the Show Time Picker when clicking on inputTime
         inputTime.setOnClickListener(v -> showTimePicker());
 
-        // Handle FAB click to toggle form visibility
+        // here i Handle FAB click to toggle form visibility
         fabAddItinerary.setOnClickListener(v -> {
             if (formContainer.getVisibility() == View.GONE) {
                 formContainer.setVisibility(View.VISIBLE);
@@ -89,7 +88,7 @@ public class ItineraryFragment extends Fragment {
             }
         });
 
-        // Handle adding new itinerary
+        //adding new itinerary button
         addButton.setOnClickListener(v -> addItinerary());
 
         return view;

@@ -6,7 +6,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:padding="16dp"
+    android:background="@color/navy_blue"
     tools:context=".SignUpPage">
 
     <!-- App Title -->
@@ -15,161 +16,181 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="NextTrip - Sign Up"
-        android:textSize="28sp"
-        android:textColor="#40A4FF"
+        android:textSize="26sp"
+        android:textColor="@color/light_gray"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="24dp"/>
 
     <!-- Background World Map Image -->
     <ImageView
         android:id="@+id/worldMap"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/world_map2"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="World Map"/>
-
-    <!-- Sign Up Form Container -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/signUpCard"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        app:cardCornerRadius="12dp"
-        app:cardBackgroundColor="#1A1A1A"
+        android:layout_height="180dp"
+        android:contentDescription="World Map"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:src="@drawable/world_map3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <!-- ScrollView for the form -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/worldMap"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:layout_height="wrap_content">
 
-            <!-- Full Name Input -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Sign Up Form Container -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/signUpCard"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Full Name"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"/>
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/light_gray"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:padding="24dp"
+                android:layout_marginTop="30dp">
 
-            <EditText
-                android:id="@+id/fullNameInput"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/input_field"
-                android:hint="Enter Full Name"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#B0B0B0"
-                android:padding="10dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
 
-            <!-- Username Input -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Username"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                android:layout_marginTop="10dp"/>
+                    <!-- Full Name Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/fullNameLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Full Name"
+                        app:hintTextColor="@color/navy_blue"
+                        app:boxStrokeColor="@color/navy_blue"
+                        app:boxStrokeWidth="1dp"
+                        app:boxBackgroundMode="outline">
 
-            <EditText
-                android:id="@+id/usernameInput"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/input_field"
-                android:hint="Enter Username"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#B0B0B0"
-                android:padding="10dp"/>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/fullNameInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/navy_blue"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Email Input (🔥 NEW FIELD ADDED) -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Email Address"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                android:layout_marginTop="10dp"/>
+                    <!-- Username Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/usernameLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Username"
+                        app:hintTextColor="@color/navy_blue"
+                        app:boxStrokeColor="@color/navy_blue"
+                        app:boxStrokeWidth="1dp"
+                        app:boxBackgroundMode="outline"
+                        android:layout_marginTop="14dp">
 
-            <EditText
-                android:id="@+id/emailInput"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/input_field"
-                android:hint="Enter Email Address"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#B0B0B0"
-                android:padding="10dp"
-                android:inputType="textEmailAddress"/>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/usernameInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/navy_blue"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Password Input -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Password"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                android:layout_marginTop="10dp"/>
+                    <!-- Email Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/emailLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Email"
+                        app:hintTextColor="@color/navy_blue"
+                        app:boxStrokeColor="@color/navy_blue"
+                        app:boxStrokeWidth="1dp"
+                        app:boxBackgroundMode="outline"
+                        android:layout_marginTop="14dp">
 
-            <EditText
-                android:id="@+id/passwordInput"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/input_field"
-                android:hint="Enter Password"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#B0B0B0"
-                android:padding="10dp"
-                android:inputType="textPassword"/>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/emailInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress"
+                            android:textColor="@color/navy_blue"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Confirm Password Input -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Confirm Password"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                android:layout_marginTop="10dp"/>
+                    <!-- Password Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/passwordLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Password"
+                        app:hintTextColor="@color/navy_blue"
+                        app:boxStrokeColor="@color/navy_blue"
+                        app:boxStrokeWidth="1dp"
+                        app:boxBackgroundMode="outline"
+                        android:layout_marginTop="14dp">
 
-            <EditText
-                android:id="@+id/confirmPasswordInput"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/input_field"
-                android:hint="Confirm Password"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#B0B0B0"
-                android:padding="10dp"
-                android:inputType="textPassword"/>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/passwordInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:textColor="@color/navy_blue"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Sign Up Button -->
-            <Button
-                android:id="@+id/registerButton"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:text="Sign Up"
-                android:background="@drawable/button_background"
-                android:textColor="#FFFFFF"
-                android:layout_marginTop="15dp"/>
+                    <!-- Confirm Password Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/confirmPasswordLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Confirm Password"
+                        app:hintTextColor="@color/navy_blue"
+                        app:boxStrokeColor="@color/navy_blue"
+                        app:boxStrokeWidth="1dp"
+                        app:boxBackgroundMode="outline"
+                        android:layout_marginTop="14dp">
 
-            <!-- Already Have an Account -->
-            <TextView
-                android:id="@+id/alreadyHaveAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Already have an account? Log in"
-                android:textColor="#40A4FF"
-                android:textSize="14sp"
-                android:layout_marginTop="10dp"/>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/confirmPasswordInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:textColor="@color/navy_blue"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- Sign Up Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/registerButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Sign Up"
+                        app:cornerRadius="12dp"
+                        app:backgroundTint="@android:color/black"
+                        android:textColor="@android:color/white"
+                        android:layout_marginTop="18dp"/>
+
+                    <!-- Already Have an Account -->
+                    <TextView
+                        android:id="@+id/alreadyHaveAccount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Already have an account? Log in"
+                        android:textSize="14sp"
+                        android:textColor="@color/navy_blue"
+                        android:layout_marginTop="12dp"
+                        android:layout_gravity="center_horizontal"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +64,9 @@ public class FlightBookingPayment extends AppCompatActivity {
         totalCostTextView.setText("Total to Pay: £" + price);
 
         confirmPaymentButton.setOnClickListener(v -> processPayment());
+
+        MaterialButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
     }
 
     private void processPayment() {

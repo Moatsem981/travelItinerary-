@@ -6,6 +6,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class BookingForm2Activity extends AppCompatActivity {
@@ -52,5 +54,8 @@ public class BookingForm2Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        MaterialButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
     }
 }

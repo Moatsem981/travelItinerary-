@@ -46,10 +46,7 @@ public class HomeFragment extends Fragment {
             navigateToActivity(ViewHotelsActivity.class);
         });
 
-        view.findViewById(R.id.myCurrentBookingsCard).setOnClickListener(v -> {
-            Log.d("NavigationDebug", "Navigating to MyCurrentBookings");
-            navigateToActivity(MyCurrentBookings.class);
-        });
+
 
         view.findViewById(R.id.viewMyHotelBookingsCard).setOnClickListener(v -> {
             Log.d("NavigationDebug", "Navigating to MyHotelBookings");

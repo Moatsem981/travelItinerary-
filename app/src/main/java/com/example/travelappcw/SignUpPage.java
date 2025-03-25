@@ -30,14 +30,12 @@ public class SignUpPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up_page);
 
-
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-
         fullNameInput = findViewById(R.id.fullNameInput);
         usernameInput = findViewById(R.id.usernameInput);
-        emailInput = findViewById(R.id.emailInput); // 🔥
+        emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         confirmPasswordInput = findViewById(R.id.confirmPasswordInput);
         registerButton = findViewById(R.id.registerButton);
@@ -45,12 +43,20 @@ public class SignUpPage extends AppCompatActivity {
 
         // Register button listener
         registerButton.setOnClickListener(v -> registerUser());
+
+        // Already have account listener
+        alreadyHaveAccount.setOnClickListener(v -> {
+            // Navigate back to LoginSignUpPage
+            Intent intent = new Intent(SignUpPage.this, LoginSignUpPage.class);
+            startActivity(intent);
+            finish(); // Optional: closes this activity so user can't navigate back to it with back button
+        });
     }
 
     private void registerUser() {
         String fullName = fullNameInput.getText().toString().trim();
         String username = usernameInput.getText().toString().trim();
-        String email = emailInput.getText().toString().trim(); // 🔥 Collect real email
+        String email = emailInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
         String confirmPassword = confirmPasswordInput.getText().toString().trim();
 
@@ -83,7 +89,7 @@ public class SignUpPage extends AppCompatActivity {
         Map<String, Object> user = new HashMap<>();
         user.put("fullName", fullName);
         user.put("username", username);
-        user.put("email", email); // 🔥 Store the real email
+        user.put("email", email);
 
         db.collection("Users").document(username)
                 .set(user)

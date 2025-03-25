@@ -6,6 +6,8 @@
     android:padding="24dp"
     android:background="@color/navy_blue">
 
+
+
     <!-- Checkmark Icon -->
     <ImageView
         android:id="@+id/checkmarkIcon"

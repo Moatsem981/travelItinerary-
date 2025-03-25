@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import java.util.Calendar;
 
@@ -67,6 +69,9 @@ public class BookingForm1Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        MaterialButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
     }
 
     private void showDatePicker(TextInputEditText editText) {

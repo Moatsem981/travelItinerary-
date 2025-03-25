@@ -1,80 +1,139 @@
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@color/navy_blue">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+    <!-- Scrollable Content - Starts from top of screen -->
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/imageSlider"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/hotelName"
+            <!-- Image Slider - Now at the very top -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/imageSlider"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+
+            <!-- Tab layout - Below image slider -->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Hotel Info -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/hotelName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/light_gray" />
+
+                <TextView
+                    android:id="@+id/hotelLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_marginTop="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        android:id="@+id/hotelPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/light_gray" />
+
+                    <TextView
+                        android:id="@+id/hotelRatings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:layout_marginStart="16dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/hotelDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/light_gray"
+                    android:layout_marginTop="16dp" />
+
+                <TextView
+                    android:id="@+id/amenitiesList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/light_gray"
+                    android:layout_marginTop="16dp" />
+
+                <!-- Buttons -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/reserveButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Reserve Now"
+                    android:layout_marginTop="24dp"
+                    app:cornerRadius="8dp"
+                    app:backgroundTint="@android:color/black"
+                    android:textColor="@android:color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/viewOnMapButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="View Location on Map"
+                    android:layout_marginTop="8dp"
+                    app:cornerRadius="8dp"
+                    app:backgroundTint="@android:color/black"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Back Button (Top Left) - Floating above content -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"/>
-
-    <TextView
-        android:id="@+id/hotelLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:text="Back"
         android:textSize="16sp"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginTop="8dp"/>
+        android:textColor="@android:color/white"
+        app:backgroundTint="@android:color/black"
+        app:cornerRadius="12dp"
+        app:strokeColor="@android:color/white"
+        app:strokeWidth="1dp"
+        android:elevation="8dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:layout_margin="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
 
-    <TextView
-        android:id="@+id/hotelPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginTop="8dp"/>
-
-    <TextView
-        android:id="@+id/hotelRatings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@android:color/holo_blue_dark"
-        android:layout_marginTop="8dp"/>
-
-    <TextView
-        android:id="@+id/hotelDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:layout_marginTop="16dp"/>
-
-    <TextView
-        android:id="@+id/amenitiesList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:layout_marginTop="16dp"/>
-
-    <!-- Reserve Button -->
-    <Button
-        android:id="@+id/reserveButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Reserve Now"
-        android:layout_marginTop="16dp"/>
-
-    <!-- New View Location Button -->
-    <Button
-        android:id="@+id/viewOnMapButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="View Location on Map"
-        android:layout_marginTop="8dp"/>
-
-</LinearLayout>
+</RelativeLayout>

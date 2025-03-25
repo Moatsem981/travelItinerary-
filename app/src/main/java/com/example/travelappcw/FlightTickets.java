@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -60,6 +61,9 @@ public class FlightTickets extends AppCompatActivity {
         loadFlights();
 
         setupFilter();
+
+        MaterialButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
     }
 
     private void loadFlights() {
@@ -135,5 +139,8 @@ public class FlightTickets extends AppCompatActivity {
                 return;
         }
         flightAdapter.notifyDataSetChanged();
+
+
     }
+
 }

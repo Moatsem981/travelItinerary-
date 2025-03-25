@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,7 +7,25 @@
     android:padding="16dp"
     android:background="@color/navy_blue">
 
-    <!-- Page Title -->
+    <!-- Back Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        app:backgroundTint="@android:color/black"
+        app:cornerRadius="12dp"
+        app:strokeColor="@android:color/white"
+        app:strokeWidth="1dp"
+        android:elevation="4dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Page Title  -->
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
@@ -15,9 +34,10 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/light_gray"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/backButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
         android:paddingBottom="16dp"/>
 
     <!-- Form Container -->
@@ -109,8 +129,8 @@
                 android:id="@+id/specialRequestsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/navy_blue"
                 android:hint="Special Requests"
+                android:textColorHint="@color/navy_blue"
                 android:layout_marginBottom="16dp"
                 app:hintTextColor="@color/navy_blue"
                 app:boxStrokeColor="@color/navy_blue"
@@ -140,7 +160,6 @@
                 app:strokeWidth="1dp"
                 android:elevation="4dp"/>
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

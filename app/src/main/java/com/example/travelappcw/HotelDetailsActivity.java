@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
@@ -136,7 +138,8 @@ public class HotelDetailsActivity extends AppCompatActivity {
                 Toast.makeText(this, "Error: Hotel details not found", Toast.LENGTH_SHORT).show();
             }
         });
-
+        MaterialButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
 
     }
 }

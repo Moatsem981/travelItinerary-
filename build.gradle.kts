@@ -5,10 +5,10 @@ plugins {
 
 buildscript {
     repositories {
-        google() // Ensure that the Google repository is included
-        mavenCentral() // Include Maven Central if needed
+        google()
+        mavenCentral()
     }
     dependencies {
-        classpath("com.google.gms:google-services:4.4.2") // Correctly placed in buildscript block
+        classpath("com.google.gms:google-services:4.4.2")
     }
 }

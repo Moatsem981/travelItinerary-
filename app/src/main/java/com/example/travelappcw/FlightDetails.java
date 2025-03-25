@@ -8,6 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.button.MaterialButton;
+
 public class FlightDetails extends AppCompatActivity {
 
     private String loggedInUsername;
@@ -77,5 +79,9 @@ public class FlightDetails extends AppCompatActivity {
             bookIntent.putExtra("price", price);
             startActivity(bookIntent);
         });
+
+        MaterialButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
+
     }
 }

@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.button.MaterialButton;
+
 public class ConfirmationActivity extends AppCompatActivity {
 
     @Override
@@ -25,5 +27,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
     }
 }

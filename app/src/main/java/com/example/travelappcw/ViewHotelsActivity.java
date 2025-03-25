@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ public class ViewHotelsActivity extends AppCompatActivity implements HotelAdapte
     private RecyclerView recyclerView;
     private HotelAdapter hotelAdapter;
     private List<Hotel> hotelList = new ArrayList<>();
-    private String loggedInUsername; // To store the logged-in user ID
+    private String loggedInUsername; // it stores the logged-in user ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +39,14 @@ public class ViewHotelsActivity extends AppCompatActivity implements HotelAdapte
         recyclerView = findViewById(R.id.recyclerViewHotels);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // ✅ Fixed constructor call (added 'false' to show Reserve Button)
+        // finally fixed the constructor call
         hotelAdapter = new HotelAdapter(this, hotelList, this, false);
         recyclerView.setAdapter(hotelAdapter);
 
         fetchHotelData();
+
+        MaterialButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
     }
 
     private void fetchHotelData() {
@@ -60,11 +65,11 @@ public class ViewHotelsActivity extends AppCompatActivity implements HotelAdapte
                             List<String> amenities = (List<String>) document.get("amenities");
                             List<String> imageUrls = (List<String>) document.get("imageUrls");
 
-                            // ✅ Retrieve latitude & longitude properly (set default 0.0 if null)
+                            // here it retrieves latitude n longitude
                             double latitude = document.contains("latitude") ? document.getDouble("latitude") : 0.0;
                             double longitude = document.contains("longitude") ? document.getDouble("longitude") : 0.0;
 
-                            // 🔹 Debug log for verification
+                            // Debug log for verification
                             Log.d("FirestoreData", "Hotel: " + name + " | Lat: " + latitude + " | Lng: " + longitude);
 
                             Hotel hotel = new Hotel(name, location, price, ratings, description, amenities, imageUrls, latitude, longitude);

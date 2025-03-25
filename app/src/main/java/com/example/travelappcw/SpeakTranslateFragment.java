@@ -134,6 +134,6 @@ public class SpeakTranslateFragment extends Fragment {
         languageMap.put("Chinese", TranslateLanguage.CHINESE);
         languageMap.put("Japanese", TranslateLanguage.JAPANESE);
 
-        return languageMap.getOrDefault(language, TranslateLanguage.ENGLISH); // Default to English
+        return languageMap.getOrDefault(language, TranslateLanguage.ENGLISH); // set the default to English
     }
 }

@@ -7,7 +7,7 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="6dp"
-    android:backgroundTint="@color/navy_blue">
+    android:backgroundTint="@color/light_gray">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/white"
+            android:textColor="@color/navy_blue"
             android:paddingTop="4dp"/>
 
         <TextView
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/navy_blue"
             android:paddingTop="4dp"/>
 
         <Button

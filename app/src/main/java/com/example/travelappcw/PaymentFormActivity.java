@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
@@ -73,6 +75,9 @@ public class PaymentFormActivity extends AppCompatActivity {
 
 
         confirmPaymentButton.setOnClickListener(v -> processPayment());
+
+        MaterialButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
     }
 
     private void processPayment() {
@@ -80,12 +85,12 @@ public class PaymentFormActivity extends AppCompatActivity {
 
 
         if (loggedInUsername == null || loggedInUsername.isEmpty()) {
-            Log.e("PaymentFormActivity", "❌ ERROR: No user logged in! USER_ID is NULL.");
+            Log.e("PaymentFormActivity", "ERROR: No user logged in! USER_ID is NULL.");
             Toast.makeText(this, "Error: User is not logged in!", Toast.LENGTH_LONG).show();
             finish();
             return;
         } else {
-            Log.d("PaymentFormActivity", "✅ User logged in as: " + loggedInUsername);
+            Log.d("PaymentFormActivity", "User logged in as: " + loggedInUsername);
         }
 
 
