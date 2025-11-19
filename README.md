@@ -38,8 +38,8 @@ This is a comprehensive Android mobile travel application designed to streamline
 ### Installation and Run
 1.  Clone the repository:
     ```bash
-    git clone [YOUR-REPO-URL]
-    cd [YOUR-REPO-NAME]
+    git clone [(https://github.com/Moatsem981/travelItinerary-.git)]
+    cd [travelItinerary-]
     ```
 2.  Open the project in Android Studio.
 3.  Configure your **Google Maps API Key** and **Firebase Connection** in the project's resource files (detailed instructions can be found in the `DOCS/SETUP_GUIDE.md` file [if you create one]).
